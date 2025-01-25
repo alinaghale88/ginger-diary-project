@@ -27,6 +27,17 @@ app.post("/api/entries", async (req, res) => {
     }
 });
 
+app.delete("/api/entries/:id", async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        await Entry.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Entry deleted" });
+    } catch (error) {
+        res.status(404).json({ success: false, message: "Entry not found" });
+    }
+});
+
 app.listen(5000, () => {
     connectDB();
     console.log("Server started at http://localhost:5000");
