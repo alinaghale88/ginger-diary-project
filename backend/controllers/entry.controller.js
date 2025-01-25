@@ -49,11 +49,15 @@ export const updateEntry = async (req, res) => {
 export const deleteEntry = async (req, res) => {
     const { id } = req.params;
     
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({success: false, message: "Invalid Entry Id"});
+    }
+
     try {
         await Entry.findByIdAndDelete(id);
         res.status(200).json({ success: true, message: "Entry deleted" });
     } catch (error) {
         console.log("error in deleting entry:", error.message);
-        res.status(404).json({ success: false, message: "Entry not found" });
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 }
