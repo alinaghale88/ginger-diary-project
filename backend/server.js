@@ -7,7 +7,9 @@ dotenv.config();
 
 const app = express();
 
-app.post("/entries", async (req, res) => {
+app.use(express.json()); // allows us to accept JSON data in the req.body
+
+app.post("/api/entries", async (req, res) => {
     const entry = req.body; // user will send this data
 
     if(!entry.title || !entry.content) {
