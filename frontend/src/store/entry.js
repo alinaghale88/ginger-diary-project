@@ -18,4 +18,9 @@ export const useEntryStore = create((set) => ({
         set((state) => ({ entries: [...state.entries, data.data] }));
         return { success: true, message: "Entry created successfully" };
     },
+    fetchEntries: async () => {
+        const res = await fetch("/api/entries");
+        const data = await res.json;
+        set({ entries: data.data });
+    }
 }));
