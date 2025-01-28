@@ -16,5 +16,6 @@ export const useEntryStore = create((set) => ({
         });
         const data = await res.json();
         set((state) => ({ entries: [...state.entries, data.data] }));
+        return { success: true, message: "Entry created successfully" };
     },
 }));

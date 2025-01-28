@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useEntryStore } from '../store/entry';
 
 const JournalPage = () => {
     const [newEntry, setNewEntry] = useState({
@@ -7,9 +8,19 @@ const JournalPage = () => {
         content: ""
     });
 
-    const handleAddEntry = () => {
-        console.log(newEntry);
+    const { createEntry } = useEntryStore();
+
+    const handleAddEntry = async () => {
+        const { success, message } = await createEntry(newEntry)
+        if (success) {
+            alert("Entry created successfully");
+        }
+        else {
+            alert("Please fill in all the fields")
+        }
+        setNewEntry({ title: "", content: "" });
     }
+
     return (
         <div>
 
