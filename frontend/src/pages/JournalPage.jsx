@@ -22,7 +22,7 @@ const JournalPage = () => {
     }
 
     return (
-        <div>
+        <div className='max-w-4xl m-auto'>
 
             <div>
                 <input type="text" name="title" value={newEntry.title} onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })} />
@@ -30,9 +30,9 @@ const JournalPage = () => {
             <div>
                 <textarea name="content" value={newEntry.content} onChange={(e) => setNewEntry({ ...newEntry, content: e.target.value })} />
             </div>
-            <div><button type="submit" onClick={handleAddEntry}>Save Entry</button></div>
+            <button type="submit" onClick={handleAddEntry}>Save Entry</button>
 
-        </div>
+        </div >
     )
 }
 

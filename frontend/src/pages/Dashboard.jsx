@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { CiSquarePlus } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import { useEntryStore } from '../store/entry';
+import EntryCard from '../components/EntryCard';
 
 const Dashboard = () => {
   const { fetchEntries, entries } = useEntryStore();
@@ -20,9 +21,9 @@ const Dashboard = () => {
           <EntryCard key={entry._id} entry={entry} />
         ))}
       </div>
-      <div>
-        <p>No entries yet. <Link to={"/journal"}><span className='text-yellow-300'>Create one today</span></Link></p>
-      </div>
+
+      {entries.length === 0 && (<p>No entries yet. <Link to={"/journal"}><span className='text-yellow-300'>Create one today</span></Link></p>)}
+
     </div>
   )
 }

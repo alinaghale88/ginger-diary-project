@@ -20,7 +20,17 @@ export const useEntryStore = create((set) => ({
     },
     fetchEntries: async () => {
         const res = await fetch("/api/entries");
-        const data = await res.json;
+        const data = await res.json();
         set({ entries: data.data });
+    },
+    deleteEntry: async (eid) => {
+        const res = await fetch(`/api/entries/${eid}`, {
+            method: "DELETE",
+        });
+        const data = await res.json();
+        if (!data.success) return { success: false, message: data.message };
+
+        set(state => ({ entries: state.entries.filter(entry => entry._id !== eid) }));
+        return { success: true, message: data.message };
     }
 }));
