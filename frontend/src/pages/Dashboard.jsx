@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { CiSquarePlus } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import { useEntryStore } from '../store/entry';
 import EntryCard from '../components/EntryCard';
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 const Dashboard = () => {
   const { fetchEntries, entries } = useEntryStore();
@@ -13,9 +14,11 @@ const Dashboard = () => {
   console.log("entries", entries);
   return (
     <div>
-      <div>
-        <Link to={"/journal"}><CiSquarePlus className='text-[40px]' /></Link>
-      </div>
+      <Link to={"/journal"}>
+        <Button>
+          <Plus /> Create Entry
+        </Button>
+      </Link>
       <div>
         {entries.map((entry) => (
           <EntryCard key={entry._id} entry={entry} />
