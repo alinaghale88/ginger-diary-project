@@ -30,6 +30,7 @@ export const useEntryStore = create((set) => ({
         const data = await res.json();
         if (!data.success) return { success: false, message: data.message };
 
+        // Update the UI immediately, without needing a refresh
         set(state => ({ entries: state.entries.filter(entry => entry._id !== eid) }));
         return { success: true, message: data.message };
     }

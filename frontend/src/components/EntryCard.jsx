@@ -14,7 +14,6 @@ const EntryCard = ({ entry }) => {
             <h2 className='text-3xl'>{entry.title}</h2>
             <p>{entry.content}</p>
             <RiDeleteBin6Line onClick={() => handleDeleteEntry(entry._id)} className='text-[24px]' />
-            <button onClick={() => handleDeleteEntry(entry._id)}>Delete</button>
         </div>
     )
 }
