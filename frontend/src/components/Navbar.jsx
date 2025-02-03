@@ -1,17 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 
-const Navbar = () => {
+const Navbar = ({ children }) => {
     return (
-        <div className='navbar'>
-            <Link to={"/"}>Dashboard</Link>
-            <Link to={"/"}>Search</Link>
-            <Link to={"/"}>New Chapter</Link>
-            <Link to={"/"}>Gallery</Link>
-            <Link to={"/"}>Export</Link>
-            <Link to={"/"}>Profile</Link>
-        </div>
+        <SidebarProvider>
+            <AppSidebar />
+            <main>
+                <SidebarTrigger />
+                {children}
+            </main>
+        </SidebarProvider>
     )
 }
 
 export default Navbar
+
