@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar"
 
 const Navbar = ({ children }) => {
     return (
-        <SidebarProvider>
+        <SidebarProvider className="w-auto">
             <AppSidebar />
             <main>
                 <SidebarTrigger />

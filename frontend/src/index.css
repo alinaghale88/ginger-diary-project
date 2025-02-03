@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.navbar {
-  display: flex;
-  justify-content: space-evenly;
-}
-
 form {
   background-color: #fff;
   max-width: 600px;
