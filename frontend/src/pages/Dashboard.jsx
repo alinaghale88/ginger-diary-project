@@ -11,12 +11,10 @@ const Dashboard = () => {
   }, [fetchEntries]);
   console.log("entries", entries);
   return (
-    <div>
-      <div>
-        {entries.map((entry) => (
-          <EntryCard key={entry._id} entry={entry} />
-        ))}
-      </div>
+    <div className="className = max-w-[800px] mx-auto">
+      {entries.map((entry) => (
+        <EntryCard key={entry._id} entry={entry} />
+      ))}
 
       {entries.length === 0 && (<p>No entries yet. <Link to={"/journal"}><span className='text-yellow-300'>Create one today</span></Link></p>)}
 

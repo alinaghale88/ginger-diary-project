@@ -9,7 +9,7 @@ const App = () => {
   return (
     <div className='flex'>
       <Navbar className='z-50' />
-      <div className='-ml-7'>
+      <div className='-ml-7 w-full'>
         <Header />
         <Routes>
           <Route path="/" element={<Dashboard />}></Route>
