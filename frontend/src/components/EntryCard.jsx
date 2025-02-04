@@ -29,7 +29,7 @@ const EntryCard = ({ entry }) => {
                 <p>{entry.content}</p>
             </CardContent>
             <CardFooter>
-                <Trash2 onClick={() => handleDeleteEntry(entry._id)} />
+                #Tags<Trash2 onClick={() => handleDeleteEntry(entry._id)} />
             </CardFooter>
         </Card>
     )

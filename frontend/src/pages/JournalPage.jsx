@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 import { useEntryStore } from '../store/entry';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const JournalPage = () => {
     const [newEntry, setNewEntry] = useState({
@@ -27,9 +29,7 @@ const JournalPage = () => {
             <div>
                 <input type="text" name="title" value={newEntry.title} onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })} />
             </div>
-            <div>
-                <textarea name="content" value={newEntry.content} onChange={(e) => setNewEntry({ ...newEntry, content: e.target.value })} />
-            </div>
+            <ReactQuill theme="snow" value={newEntry.content} onChange={(content) => setNewEntry({ ...newEntry, content })} />
             <button type="submit" onClick={handleAddEntry}>Save Entry</button>
 
         </div >
