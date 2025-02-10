@@ -23,6 +23,7 @@ export const loginUser = async (req, res) => {
 
 // signup user
 export const signupUser = async (req, res) => {
+
     const { email, password } = req.body
 
     try {
