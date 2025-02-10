@@ -1,5 +1,6 @@
 import { House, BookOpenText, Search, Images, FolderOutput, UserPen } from "lucide-react"
 import { useLogout } from "@/hooks/useLogout"
+import { useAuthContext } from "@/hooks/useAuthContext"
 import {
     Sidebar,
     SidebarContent,
@@ -48,6 +49,7 @@ const items = [
 export function AppSidebar() {
 
     const { logout } = useLogout()
+    const { user } = useAuthContext()
 
     const handleClick = () => {
         logout()
@@ -68,11 +70,13 @@ export function AppSidebar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild onClick={handleClick}>
-                                    <span>Logout</span>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
+                            {user && (
+                                <SidebarMenuItem>
+                                    <span>{user.email}</span>
+                                    <SidebarMenuButton asChild onClick={handleClick}>
+                                        <span>Logout</span>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>)}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
