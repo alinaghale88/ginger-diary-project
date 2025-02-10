@@ -1,8 +1,12 @@
 import express from "express";
 
 import { createEntry, deleteEntry, getEntry, updateEntry } from "../controllers/entry.controller.js";
+import { requireAuth } from "../middleware/requireAuth.js";
 
 const router = express.Router();
+
+// require auth for all entries routes
+router.use(requireAuth);
 
 router.get("/", getEntry);
 
