@@ -1,5 +1,5 @@
 import { House, BookOpenText, Search, Images, FolderOutput, UserPen } from "lucide-react"
-
+import { useLogout } from "@/hooks/useLogout"
 import {
     Sidebar,
     SidebarContent,
@@ -46,6 +46,12 @@ const items = [
 ]
 
 export function AppSidebar() {
+
+    const { logout } = useLogout()
+
+    const handleClick = () => {
+        logout()
+    }
     return (
         <Sidebar>
             <SidebarContent>
@@ -62,6 +68,11 @@ export function AppSidebar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
+                            <SidebarMenuItem>
+                                <SidebarMenuButton asChild onClick={handleClick}>
+                                    <span>Logout</span>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
