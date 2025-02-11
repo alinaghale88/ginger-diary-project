@@ -21,7 +21,7 @@ const JournalPage = () => {
         if (!user) {
             return;
         }
-        const { success, message } = await createEntry(newEntry)
+        const { success, message } = await createEntry(newEntry, user)
         if (success) {
             alert("Entry created successfully");
         }

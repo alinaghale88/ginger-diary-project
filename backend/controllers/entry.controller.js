@@ -3,7 +3,8 @@ import Entry from "../models/entry.model.js";
 
 export const getEntry = async (req, res) => {
     try {
-        const entries = await Entry.find({});
+        const user_id = req.user._id
+        const entries = await Entry.find({ user_id });
         res.status(200).json({ success: true, data: entries });
     } catch (error) {
         console.log("error in fetching products:", error.message);
@@ -13,12 +14,11 @@ export const getEntry = async (req, res) => {
 
 export const createEntry = async (req, res) => {
     const entry = req.body; // user will send this data
-
-    if(!entry.title || !entry.content) {
+    const user_id = req.user._id;
+    if (!entry.title || !entry.content) {
         return res.status(400).json({ success: false, message: "Please enter all fields" })
     }
-
-    const newEntry = new Entry(entry);
+    const newEntry = new Entry({ ...entry, user_id });
 
     try {
         await newEntry.save();
@@ -30,27 +30,27 @@ export const createEntry = async (req, res) => {
 }
 
 export const updateEntry = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const entry = req.body;
 
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({success: false, message: "Invalid Entry Id"});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Invalid Entry Id" });
     }
 
     try {
-        const updatedEntry = await Entry.findByIdAndUpdate(id, entry, {new:true});
+        const updatedEntry = await Entry.findByIdAndUpdate(id, entry, { new: true });
         res.status(200).json({ success: true, data: updatedEntry });
-    } catch(error) {
+    } catch (error) {
         res.status(500).json({ success: false, message: "Server Error" });
     }
 }
 
 export const deleteEntry = async (req, res) => {
     const { id } = req.params;
-    
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({success: false, message: "Invalid Entry Id"});
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Invalid Entry Id" });
     }
 
     try {

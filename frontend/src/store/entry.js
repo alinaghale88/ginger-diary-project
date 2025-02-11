@@ -3,6 +3,7 @@ import { create } from "zustand";
 export const useEntryStore = create((set) => ({
     entries: [],
     setEntries: (entries) => set({ entries }),
+    clearEntries: () => set({ entries: [] }),
     createEntry: async (newEntry, user) => {
         if (!user) {
             return { success: false, message: "You must be logged in" };
