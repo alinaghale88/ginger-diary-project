@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useEntryStore } from '../store/entry';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 const JournalPage = () => {
     const [newEntry, setNewEntry] = useState({
@@ -10,11 +11,16 @@ const JournalPage = () => {
         content: ""
     });
 
+    const { user } = useAuthContext()
+
     const reactQuillRef = useRef(null);
 
     const { createEntry } = useEntryStore();
 
     const handleAddEntry = async () => {
+        if (!user) {
+            return;
+        }
         const { success, message } = await createEntry(newEntry)
         if (success) {
             alert("Entry created successfully");

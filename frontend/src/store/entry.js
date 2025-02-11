@@ -3,7 +3,10 @@ import { create } from "zustand";
 export const useEntryStore = create((set) => ({
     entries: [],
     setEntries: (entries) => set({ entries }),
-    createEntry: async (newEntry) => {
+    createEntry: async (newEntry, user) => {
+        if (!user) {
+            return { success: false, message: "You must be logged in" };
+        }
         if (!newEntry.title || !newEntry.content) {
             return { success: false, message: "Please fill in all fields" };
         }
@@ -11,6 +14,7 @@ export const useEntryStore = create((set) => ({
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${user.token}`
             },
             body: JSON.stringify(newEntry),
         });
@@ -18,14 +22,27 @@ export const useEntryStore = create((set) => ({
         set((state) => ({ entries: [...state.entries, data.data] }));
         return { success: true, message: "Entry created successfully" };
     },
-    fetchEntries: async () => {
-        const res = await fetch("/api/entries");
+    fetchEntries: async (user) => {
+        if (!user) {
+            return
+        }
+        const res = await fetch("/api/entries", {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
         const data = await res.json();
         set({ entries: data.data });
     },
-    deleteEntry: async (eid) => {
+    deleteEntry: async (eid, user) => {
+        if (!user) {
+            return
+        }
         const res = await fetch(`/api/entries/${eid}`, {
             method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         });
         const data = await res.json();
         if (!data.success) return { success: false, message: data.message };

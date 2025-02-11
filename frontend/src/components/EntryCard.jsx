@@ -9,15 +9,25 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Trash2 } from 'lucide-react';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 // import { RiDeleteBin6Line } from "react-icons/ri";
 
 
 const EntryCard = ({ entry }) => {
+    const { user } = useAuthContext(); // Get the current user
+
     const { deleteEntry } = useEntryStore();
 
     const handleDeleteEntry = async (eid) => {
-        const { success, message } = await deleteEntry(eid);
+        if (user) {
+            const { success, message } = await deleteEntry(eid, user); // Pass the user to deleteEntry
+            if (success) {
+                alert('Entry deleted successfully');
+            } else {
+                alert(message || 'Error deleting entry');
+            }
+        }
     }
     return (
         <Card>
