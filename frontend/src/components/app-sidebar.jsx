@@ -10,6 +10,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarFooter
 } from "@/components/ui/sidebar"
 
 // Menu items.
@@ -70,17 +71,20 @@ export function AppSidebar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
-                            {user && (
-                                <SidebarMenuItem>
-                                    <span>{user.email}</span>
-                                    <SidebarMenuButton asChild onClick={handleClick}>
-                                        <span>Logout</span>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>)}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                {user && (
+                    <div>
+                        <span>{user.email}</span>
+                        <SidebarMenuButton asChild onClick={handleClick}>
+                            <span className="text-red-500 cursor-pointer">Logout</span>
+                        </SidebarMenuButton>
+                    </div>
+                )}
+            </SidebarFooter>
         </Sidebar>
     )
 }

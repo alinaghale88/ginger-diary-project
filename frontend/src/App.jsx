@@ -7,6 +7,7 @@ import JournalPage from './pages/JournalPage'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import { useAuthContext } from './hooks/useAuthContext'
+import { Toaster } from './components/ui/toaster'
 
 const App = () => {
   const { user } = useAuthContext()
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to="/" />}></Route>
         <Route path="/journal" element={user ? <JournalPage /> : <Navigate to="/login" />}></Route>
       </Routes>
+      <Toaster />
     </div>
   )
 }

@@ -6,12 +6,15 @@ import 'react-quill/dist/quill.snow.css';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
+import { useToast } from '@/hooks/use-toast';
 
 const JournalPage = () => {
     const [newEntry, setNewEntry] = useState({
         title: "",
         content: ""
     });
+
+    const { toast } = useToast()
 
     const { user } = useAuthContext()
 
@@ -25,10 +28,15 @@ const JournalPage = () => {
         }
         const { success, message } = await createEntry(newEntry, user)
         if (success) {
-            alert("Entry created successfully");
+            toast({
+                description: "Entry created successfully"
+            })
         }
         else {
-            alert("Please fill in all the fields")
+            toast({
+                variant: "destructive",
+                description: "Please fill in all the fields"
+            })
         }
         setNewEntry({ title: "", content: "" });
     }
@@ -41,7 +49,7 @@ const JournalPage = () => {
                 <div className='max-w-4xl m-auto'>
 
                     <div>
-                        <input type="text" name="title" value={newEntry.title} onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })} />
+                        <input type="text" name="title" placeholder='Title' value={newEntry.title} onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })} />
                     </div>
                     <ReactQuill
                         ref={reactQuillRef}
