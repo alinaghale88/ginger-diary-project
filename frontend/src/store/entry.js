@@ -8,7 +8,7 @@ export const useEntryStore = create((set) => ({
         if (!user) {
             return { success: false, message: "You must be logged in" };
         }
-        if (!newEntry.title || !newEntry.content) {
+        if (!newEntry.content) {
             return { success: false, message: "Please fill in all fields" };
         }
         const res = await fetch("/api/entries", {

@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/card"
 import { Trash2 } from 'lucide-react';
 import { useAuthContext } from '@/hooks/useAuthContext';
-
-// import { RiDeleteBin6Line } from "react-icons/ri";
-
+import { useToast } from '@/hooks/use-toast';
 
 const EntryCard = ({ entry }) => {
+    const { toast } = useToast();
+
     const { user } = useAuthContext(); // Get the current user
 
     const { deleteEntry } = useEntryStore();
@@ -23,23 +23,23 @@ const EntryCard = ({ entry }) => {
         if (user) {
             const { success, message } = await deleteEntry(eid, user); // Pass the user to deleteEntry
             if (success) {
-                alert('Entry deleted successfully');
+                toast({ description: 'Entry deleted successfully' });
             } else {
-                alert(message || 'Error deleting entry');
+                toast({ variant: "destructive", description: message || 'Error deleting entry' });
             }
         }
     }
     return (
-        <Card>
+        <Card className="shadow-lg">
             <CardHeader>
-                <CardTitle>{entry.title}</CardTitle>
                 <CardDescription>{entry.createdAt}</CardDescription>
             </CardHeader>
             <CardContent>
-                <p>{entry.content}</p>
+                {/* Render the content with innerHTML */}
+                <div dangerouslySetInnerHTML={{ __html: entry.content }} />
             </CardContent>
             <CardFooter>
-                #Tags<Trash2 onClick={() => handleDeleteEntry(entry._id)} />
+                <Trash2 onClick={() => handleDeleteEntry(entry._id)} />
             </CardFooter>
         </Card>
     )

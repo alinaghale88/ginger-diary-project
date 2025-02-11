@@ -15,7 +15,7 @@ export const getEntry = async (req, res) => {
 export const createEntry = async (req, res) => {
     const entry = req.body; // user will send this data
     const user_id = req.user._id;
-    if (!entry.title || !entry.content) {
+    if (!entry.content) {
         return res.status(400).json({ success: false, message: "Please enter all fields" })
     }
     const newEntry = new Entry({ ...entry, user_id });
