@@ -5,6 +5,7 @@ import EntryCard from '../components/EntryCard';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
+import 'react-quill/dist/quill.snow.css';
 
 const Dashboard = () => {
   const { fetchEntries, entries } = useEntryStore();

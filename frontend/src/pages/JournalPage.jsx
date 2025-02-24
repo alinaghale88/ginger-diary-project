@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useAuthContext } from '@/hooks/useAuthContext';
@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useEntryStore } from '../store/entry';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const JournalPage = () => {
@@ -14,9 +14,25 @@ const JournalPage = () => {
     const { user } = useAuthContext();
     const { createEntry } = useEntryStore();
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Using ref for the ReactQuill instance
     const reactQuillRef = useRef(null);
+
+    useEffect(() => {
+        // Check if there is an entry passed through the state from EntryCard
+        if (location.state && location.state.entry) {
+            const entry = location.state.entry;
+            setEntryData({
+                content: entry.content || '',
+            });
+        }
+    }, [location.state]);
+
+    // Define state for the entry content
+    const [entryData, setEntryData] = useState({
+        content: ''
+    });
 
     // Function to handle image uploads and insert them into the editor
     const handleImageUpload = async () => {
