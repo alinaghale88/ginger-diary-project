@@ -14,6 +14,15 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
 
+// Helper function to generate excerpt
+const generateExcerpt = (content, maxLength = 250) => {
+    if (!content) return "";
+    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
+    return plainTextContent.length > maxLength
+        ? content.substring(0, maxLength) + "..."
+        : content;
+};
+
 const EntryCard = ({ entry }) => {
     const { toast } = useToast();
 
@@ -45,7 +54,7 @@ const EntryCard = ({ entry }) => {
             <CardContent>
                 {/* Render the content with innerHTML */}
                 <div className='ql-snow'>
-                    <div className="ql-editor" dangerouslySetInnerHTML={{ __html: entry.content }} />
+                    <div className="ql-editor" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
                 </div>
             </CardContent>
             <CardFooter>
