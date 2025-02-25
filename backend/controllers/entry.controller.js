@@ -38,6 +38,10 @@ export const updateEntry = async (req, res) => {
         return res.status(404).json({ success: false, message: "Invalid Entry Id" });
     }
 
+    if (!entry.content || entry.content.trim() === "") {
+        return res.status(400).json({ success: false, message: "Content cannot be empty" });
+    }
+
     try {
         const updatedEntry = await Entry.findByIdAndUpdate(id, entry, { new: true });
         res.status(200).json({ success: true, data: updatedEntry });

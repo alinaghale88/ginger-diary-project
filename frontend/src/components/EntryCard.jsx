@@ -31,7 +31,7 @@ const EntryCard = ({ entry }) => {
     const navigate = useNavigate();
 
     const handleEditEntry = (entry) => {
-        // Navigate to JournalPage and pass the entry data using state
+        // Navigate to JournalPage and pass full entry object using state
         navigate('/journal', { state: { entry } });
     };
     const { deleteEntry } = useEntryStore();
@@ -58,7 +58,7 @@ const EntryCard = ({ entry }) => {
                 </div>
             </CardContent>
             <CardFooter>
-                <Pencil className='mr-5' onClick={() => handleEditEntry(entry._id)} />
+                <Pencil className='mr-5' onClick={() => handleEditEntry(entry)} />
                 <Trash2 onClick={() => handleDeleteEntry(entry._id)} />
             </CardFooter>
         </Card>

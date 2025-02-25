@@ -12,27 +12,24 @@ import { Button } from '@/components/ui/button';
 const JournalPage = () => {
     const { toast } = useToast();
     const { user } = useAuthContext();
-    const { createEntry } = useEntryStore();
+    const { createEntry, updateEntry } = useEntryStore();
     const navigate = useNavigate();
     const location = useLocation();
 
     // Using ref for the ReactQuill instance
     const reactQuillRef = useRef(null);
 
-    useEffect(() => {
-        // Check if there is an entry passed through the state from EntryCard
-        if (location.state && location.state.entry) {
-            const entry = location.state.entry;
-            setEntryData({
-                content: entry.content || '',
-            });
-        }
-    }, [location.state]);
+    const updatedEntry = location.state?.entry; // Retrieve the passed entry data
 
     // Define state for the entry content
-    const [entryData, setEntryData] = useState({
-        content: ''
-    });
+    const [entryContent, setEntryContent] = useState('');
+
+    useEffect(() => {
+        if (updatedEntry && reactQuillRef.current) {
+            const editor = reactQuillRef.current.getEditor();
+            editor.root.innerHTML = updatedEntry.content; // Set content for editing
+        }
+    }, [updatedEntry]);
 
     // Function to handle image uploads and insert them into the editor
     const handleImageUpload = async () => {
@@ -74,29 +71,49 @@ const JournalPage = () => {
         };
     };
 
-    // Function to handle adding new entry
-    const handleAddEntry = async () => {
+    // Function to handle save new entry or update existing entry
+    const handleSaveEntry = async () => {
         if (!user) return;
 
         // Get content from Quill editor (using ref)
         const editor = reactQuillRef.current.getEditor();
         const entryContent = editor.root.innerHTML;
 
-        if (!entryContent.trim()) {
+        // Check if content is empty or contains only whitespace
+        const isEmpty = !entryContent.trim();
+
+        // Check if content contains only non-visible elements (e.g., <p><br></p>)
+        const isEmptyHTML = entryContent === '<p><br></p>' || entryContent === '<div><br></div>';
+
+        if (isEmpty || isEmptyHTML) {
             toast({ variant: "destructive", description: "Content cannot be empty" });
             return;
         }
 
-        // Create the entry with only content
-        const newEntry = { content: entryContent };
+        if (updatedEntry) {
+            // Update existing entry
+            const updatedData = { ...updatedEntry, content: entryContent };
+            const { success } = await updateEntry(updatedData, user);
 
-        const { success } = await createEntry(newEntry, user);
-
-        if (success) {
-            toast({ description: "Entry created successfully" });
-            navigate('/')
+            if (success) {
+                toast({ description: "Entry updated successfully" });
+                navigate('/');
+            } else {
+                toast({ variant: "destructive", description: "There was an error updating your entry" });
+            }
         } else {
-            toast({ variant: "destructive", description: "There was an error creating your entry" });
+
+            // Create the entry with only content
+            const newEntry = { content: entryContent };
+
+            const { success } = await createEntry(newEntry, user);
+
+            if (success) {
+                toast({ description: "Entry created successfully" });
+                navigate('/')
+            } else {
+                toast({ variant: "destructive", description: "There was an error creating your entry" });
+            }
         }
 
         // Clear the content after submission
@@ -137,7 +154,7 @@ const JournalPage = () => {
                             "blockquote", "list", "bullet", "indent", "link", "image", "video", "code-block",
                         ]}
                     />
-                    <Button className="mt-[70px]" onClick={handleAddEntry}>Save Entry</Button>
+                    <Button className="mt-[70px]" onClick={handleSaveEntry}>{updatedEntry ? "Update Entry" : "Save Entry"}</Button>
                 </div>
             </div>
         </div>

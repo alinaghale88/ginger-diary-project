@@ -51,5 +51,34 @@ export const useEntryStore = create((set) => ({
         // Update the UI immediately, without needing a refresh
         set(state => ({ entries: state.entries.filter(entry => entry._id !== eid) }));
         return { success: true, message: data.message };
+    },
+    updateEntry: async (updatedEntry, user) => {
+        if (!user) {
+            return { success: false, message: "You must be logged in" };
+        }
+        if (!updatedEntry.content || updatedEntry.content.trim() === "") {
+            return { success: false, message: "Content cannot be empty" };
+        }
+
+        const res = await fetch(`/api/entries/${updatedEntry._id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(updatedEntry),
+        });
+
+        const data = await res.json();
+        if (!data.success) return { success: false, message: data.message };
+
+        // Update the entry in Zustand store
+        set(state => ({
+            entries: state.entries.map(entry =>
+                entry._id === updatedEntry._id ? data.data : entry
+            )
+        }));
+
+        return { success: true, message: "Entry updated successfully" };
     }
 }));
