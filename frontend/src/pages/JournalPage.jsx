@@ -79,17 +79,6 @@ const JournalPage = () => {
         const editor = reactQuillRef.current.getEditor();
         const entryContent = editor.root.innerHTML;
 
-        // Check if content is empty or contains only whitespace
-        const isEmpty = !entryContent.trim();
-
-        // Check if content contains only non-visible elements (e.g., <p><br></p>)
-        const isEmptyHTML = entryContent === '<p><br></p>' || entryContent === '<div><br></div>';
-
-        if (isEmpty || isEmptyHTML) {
-            toast({ variant: "destructive", description: "Content cannot be empty" });
-            return;
-        }
-
         if (updatedEntry) {
             // Update existing entry
             const updatedData = { ...updatedEntry, content: entryContent };
@@ -117,7 +106,8 @@ const JournalPage = () => {
         }
 
         // Clear the content after submission
-        editor.setText("");  // Clear the editor content directly
+        setEntryContent(''); // Update state to clear content
+
     };
 
     return (
