@@ -55,19 +55,19 @@ const EntryCard = ({ entry }) => {
     });
     return (
         <Card className="shadow-lg">
-            <CardHeader>
-                <CardDescription>{formattedDate}</CardDescription>
+            <CardHeader className="pb-3 mb-0">
+                <CardDescription className="mb-0 italic">{formattedDate}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pb-0 flex gap-10 mb-0">
                 {/* Render the content with innerHTML */}
-                <div className='ql-snow'>
-                    <div className="ql-editor" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
+                <div className='ql-snow mb-7'>
+                    <div className="ql-editor !p-0 mb-0" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
+                </div>
+                <div>
+                    <Pencil className='mb-1.5 w-4' onClick={() => handleEditEntry(entry)} />
+                    <Trash2 className='w-4' onClick={() => handleDeleteEntry(entry._id)} />
                 </div>
             </CardContent>
-            <CardFooter>
-                <Pencil className='mr-5' onClick={() => handleEditEntry(entry)} />
-                <Trash2 onClick={() => handleDeleteEntry(entry._id)} />
-            </CardFooter>
         </Card>
     )
 }
