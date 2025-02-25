@@ -40,9 +40,9 @@ const EntryCard = ({ entry }) => {
         if (user) {
             const { success, message } = await deleteEntry(eid, user); // Pass the user to deleteEntry
             if (success) {
-                toast({ description: 'Entry deleted successfully' });
+                toast({ description: 'Entry deleted successfully', duration: 1200 });
             } else {
-                toast({ variant: "destructive", description: message || 'Error deleting entry' });
+                toast({ variant: "destructive", description: message || 'Error deleting entry', duration: 1200 });
             }
         }
     }

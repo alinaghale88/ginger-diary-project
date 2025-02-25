@@ -27,7 +27,7 @@ const JournalPage = () => {
     useEffect(() => {
         if (updatedEntry && reactQuillRef.current) {
             const editor = reactQuillRef.current.getEditor();
-            editor.root.innerHTML = updatedEntry.content; // Set content for editing
+            editor.clipboard.dangerouslyPasteHTML(updatedEntry.content); // Set content for editing
         }
     }, [updatedEntry]);
 
@@ -66,7 +66,7 @@ const JournalPage = () => {
 
             } catch (error) {
                 console.error("Image upload failed:", error);
-                toast({ variant: "destructive", description: "Image upload failed" });
+                toast({ variant: "destructive", description: "Image upload failed", duration: 1200 });
             }
         };
     };
@@ -85,10 +85,10 @@ const JournalPage = () => {
             const { success } = await updateEntry(updatedData, user);
 
             if (success) {
-                toast({ description: "Entry updated successfully" });
+                toast({ description: "Entry updated successfully", duration: 1200 });
                 navigate('/');
             } else {
-                toast({ variant: "destructive", description: "There was an error updating your entry" });
+                toast({ variant: "destructive", description: "There was an error updating your entry", duration: 1200 });
             }
         } else {
 
@@ -98,10 +98,10 @@ const JournalPage = () => {
             const { success } = await createEntry(newEntry, user);
 
             if (success) {
-                toast({ description: "Entry created successfully" });
+                toast({ description: "Entry created successfully", duration: 1200 });
                 navigate('/')
             } else {
-                toast({ variant: "destructive", description: "There was an error creating your entry" });
+                toast({ variant: "destructive", description: "There was an error creating your entry", duration: 1200 });
             }
         }
 
