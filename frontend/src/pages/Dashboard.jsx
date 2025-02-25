@@ -16,18 +16,23 @@ const Dashboard = () => {
       fetchEntries(user);
     }
   }, [fetchEntries, user]);
-  console.log("entries", entries);
+
+  // Sort entries in reverse chronological order
+  const sortedEntries = entries && entries.length
+    ? [...entries].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    : [];
+
   return (
     <div className='flex'>
       <Navbar className='z-50' />
       <div className='-ml-7 w-full'>
         <Header />
         <div className="max-w-[800px] mx-auto">
-          {entries.map((entry) => (
+          {sortedEntries.map((entry) => (
             <EntryCard key={entry._id} entry={entry} />
           ))}
 
-          {entries.length === 0 && (<p>No entries yet. <Link to={"/journal"}><span className='text-yellow-300'>Create one today</span></Link></p>)}
+          {sortedEntries.length === 0 && (<p>No entries yet. <Link to={"/journal"}><span className='text-yellow-300'>Create one today</span></Link></p>)}
 
         </div>
       </div>
