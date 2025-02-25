@@ -46,10 +46,17 @@ const EntryCard = ({ entry }) => {
             }
         }
     }
+    // Format the timestamp to a readable date
+    const formattedDate = new Date(entry.createdAt).toLocaleDateString('en-CA', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
     return (
         <Card className="shadow-lg">
             <CardHeader>
-                <CardDescription>{entry.createdAt}</CardDescription>
+                <CardDescription>{formattedDate}</CardDescription>
             </CardHeader>
             <CardContent>
                 {/* Render the content with innerHTML */}
