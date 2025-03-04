@@ -3,11 +3,21 @@ import { useAuthContext } from '@/hooks/useAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 const Gallery = () => {
     const { user } = useAuthContext();
     const { toast } = useToast();
     const [media, setMedia] = useState([]);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // Fetch media data (image URLs) from the server
     const fetchMedia = async () => {
@@ -43,15 +53,21 @@ const Gallery = () => {
             <div className="-ml-7 w-full">
                 <Header />
                 <div>
-                    <h1 className="text-2xl font-bold">Gallery</h1>
                     <div className="grid grid-cols-4 gap-4 mt-4">
                         {media.length === 0 ? (
                             <p>No media available</p>
                         ) : (
                             media.map((url, index) => (
-                                <div key={index} className="relative">
-                                    <img src={url} alt={`media-${index}`} className="w-full h-auto object-cover" />
-                                </div>
+                                <Dialog key={index} className="mb-0">
+                                    <DialogTrigger asChild>
+                                        <img src={url} alt={`media-${index}`} onClick={() => setSelectedImage(url)} />
+                                    </DialogTrigger>
+                                    <DialogContent className="p-0">
+                                        {selectedImage && (
+                                            <img src={selectedImage} alt="Preview" className="w-full h-auto" />
+                                        )}
+                                    </DialogContent>
+                                </Dialog>
                             ))
                         )}
                     </div>
