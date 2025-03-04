@@ -65,3 +65,20 @@ export const deleteEntry = async (req, res) => {
         res.status(500).json({ success: false, message: "Server Error" });
     }
 }
+
+// Fetch all media URLs for a user
+export const getAllMedia = async (req, res) => {
+    try {
+        const user_id = req.user._id;
+        const entries = await Entry.find({ user_id });
+
+        const mediaUrls = entries.reduce((acc, entry) => {
+            return acc.concat(entry.media || []);
+        }, []);
+
+        res.status(200).json({ success: true, media: mediaUrls });
+    } catch (error) {
+        console.error("Error fetching media:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};

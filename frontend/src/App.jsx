@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import JournalPage from './pages/JournalPage'
+import Gallery from './pages/Gallery'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import { useAuthContext } from './hooks/useAuthContext'
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />}></Route>
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to="/" />}></Route>
         <Route path="/journal" element={user ? <JournalPage /> : <Navigate to="/login" />}></Route>
+        <Route path="/gallery" element={user ? <Gallery /> : <Navigate to="/login" />}></Route>
       </Routes>
       <Toaster />
     </div>

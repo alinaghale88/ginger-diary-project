@@ -2,8 +2,9 @@ import { create } from "zustand";
 
 export const useEntryStore = create((set) => ({
     entries: [],
+    media: [], // Store for media URLs
     setEntries: (entries) => set({ entries }),
-    clearEntries: () => set({ entries: [] }),
+    clearEntries: () => set({ entries: [], media: [] }),
     createEntry: async (newEntry, user) => {
         if (!user) {
             return { success: false, message: "You must be logged in" };
@@ -35,6 +36,22 @@ export const useEntryStore = create((set) => ({
         const data = await res.json();
         set({ entries: data.data });
     },
+
+    fetchMedia: async (user) => {
+        if (!user) return;
+
+        const res = await fetch("/api/entries/media", {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+
+        const data = await res.json();
+        if (!data.success) return;
+
+        set({ media: data.media });
+    },
+
     deleteEntry: async (eid, user) => {
         if (!user) {
             return
@@ -49,7 +66,10 @@ export const useEntryStore = create((set) => ({
         if (!data.success) return { success: false, message: data.message };
 
         // Update the UI immediately, without needing a refresh
-        set(state => ({ entries: state.entries.filter(entry => entry._id !== eid) }));
+        set(state => ({
+            entries: state.entries.filter(entry => entry._id !== eid),
+            media: state.media.filter(url => !state.entries.find(entry => entry._id === eid)?.media.includes(url))
+        }));
         return { success: true, message: data.message };
     },
     updateEntry: async (updatedEntry, user) => {
@@ -76,7 +96,8 @@ export const useEntryStore = create((set) => ({
         set(state => ({
             entries: state.entries.map(entry =>
                 entry._id === updatedEntry._id ? data.data : entry
-            )
+            ),
+            media: data.data.media ? [...new Set([...state.media, ...data.data.media])] : state.media
         }));
 
         return { success: true, message: "Entry updated successfully" };
