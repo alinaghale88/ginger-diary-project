@@ -79,9 +79,14 @@ const JournalPage = () => {
         const editor = reactQuillRef.current.getEditor();
         const entryContent = editor.root.innerHTML;
 
+        // Extract image URLs from entryContent
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = entryContent;
+        const imageUrls = Array.from(tempDiv.getElementsByTagName("img")).map(img => img.src);
+
         if (updatedEntry) {
             // Update existing entry
-            const updatedData = { ...updatedEntry, content: entryContent };
+            const updatedData = { ...updatedEntry, content: entryContent, media: imageUrls }; // Save images in media
             const { success } = await updateEntry(updatedData, user);
 
             if (success) {
@@ -93,7 +98,7 @@ const JournalPage = () => {
         } else {
 
             // Create the entry with only content
-            const newEntry = { content: entryContent };
+            const newEntry = { content: entryContent, media: imageUrls }; // Save images in media
 
             const { success } = await createEntry(newEntry, user);
 

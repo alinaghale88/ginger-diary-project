@@ -17,7 +17,7 @@ const Header = () => {
         <Menubar>
             <MenubarMenu>
                 <Link to={"/journal"}>
-                    <Button>
+                    <Button className="mt-0">
                         <Plus /> Create Entry
                     </Button>
                 </Link>

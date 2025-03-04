@@ -5,6 +5,7 @@ const entrySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    media: [{ type: String }], // Array of image URLs
     user_id: {
         type: String,
         required: true
