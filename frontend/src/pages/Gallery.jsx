@@ -16,13 +16,12 @@ import {
 const Gallery = () => {
     const { user } = useAuthContext();
     const { toast } = useToast();
-    const [media, setMedia] = useState([]);
+    const [media, setMedia] = useState({});
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // Fetch media data (image URLs) from the server
     const fetchMedia = async () => {
         try {
-            const res = await fetch('/api/entries', {
+            const res = await fetch('/api/entries/media', {
                 headers: {
                     'Authorization': `Bearer ${user.token}`,
                 },
@@ -30,8 +29,7 @@ const Gallery = () => {
 
             const data = await res.json();
             if (data.success) {
-                const allMedia = data.data.map(entry => entry.media).flat();
-                setMedia(allMedia);
+                setMedia(data.media); // Now, media is an object grouped by month and year
             } else {
                 toast({ variant: 'destructive', description: 'Failed to load media', duration: 1200 });
             }
@@ -53,28 +51,34 @@ const Gallery = () => {
             <div className="-ml-7 w-full">
                 <Header />
                 <div className="max-w-6xl mx-auto px-4">
-                    <div className="grid grid-cols-4 gap-4 mt-4">
-                        {media.length === 0 ? (
-                            <p>No media available</p>
-                        ) : (
-                            media.map((url, index) => (
-                                <Dialog key={index} className="mb-0">
-                                    <DialogTrigger asChild>
-                                        <img src={url} alt={`media-${index}`} onClick={() => setSelectedImage(url)} />
-                                    </DialogTrigger>
-                                    <DialogContent className="p-0">
-                                        {selectedImage && (
-                                            <img src={selectedImage} alt="Preview" className="w-full h-auto" />
-                                        )}
-                                    </DialogContent>
-                                </Dialog>
-                            ))
-                        )}
-                    </div>
+                    {Object.keys(media).length === 0 ? (
+                        <p>No media available</p>
+                    ) : (
+                        Object.keys(media).map((monthYear, index) => (
+                            <div key={index} className="mb-6">
+                                <h2 className="text-lg font-bold mb-2">{monthYear}</h2>
+                                <div className="grid grid-cols-4 gap-4">
+                                    {media[monthYear].map((url, idx) => (
+                                        <Dialog key={idx} className="mb-0">
+                                            <DialogTrigger asChild>
+                                                <img src={url} alt={`media-${idx}`} className="cursor-pointer" onClick={() => setSelectedImage(url)} />
+                                            </DialogTrigger>
+                                            <DialogContent className="p-0">
+                                                {selectedImage && (
+                                                    <img src={selectedImage} alt="Preview" className="w-full h-auto" />
+                                                )}
+                                            </DialogContent>
+                                        </Dialog>
+                                    ))}
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>
     );
 };
+
 
 export default Gallery;

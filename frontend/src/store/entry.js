@@ -49,8 +49,9 @@ export const useEntryStore = create((set) => ({
         const data = await res.json();
         if (!data.success) return;
 
-        set({ media: data.media });
+        set({ media: data.media }); // Now `media` is an object grouped by Year/Month
     },
+
 
     deleteEntry: async (eid, user) => {
         if (!user) {

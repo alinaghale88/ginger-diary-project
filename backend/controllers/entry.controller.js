@@ -66,17 +66,45 @@ export const deleteEntry = async (req, res) => {
     }
 }
 
-// Fetch all media URLs for a user
+// Function to fetch all media URLs
 export const getAllMedia = async (req, res) => {
     try {
         const user_id = req.user._id;
         const entries = await Entry.find({ user_id });
 
-        const mediaUrls = entries.reduce((acc, entry) => {
-            return acc.concat(entry.media || []);
-        }, []);
+        const groupedMedia = {};
 
-        res.status(200).json({ success: true, media: mediaUrls });
+        entries.forEach(entry => {
+            if (entry.media && entry.media.length > 0) {
+                const date = new Date(entry.createdAt);
+                const year = date.getFullYear();
+                const month = date.getMonth(); // Numeric (0 = January, 11 = December)
+                const monthName = date.toLocaleString('default', { month: 'long' });
+
+                const key = `${year}-${monthName}`; // Example: "2025-March"
+
+                if (!groupedMedia[key]) {
+                    groupedMedia[key] = { month, media: [] };
+                }
+                groupedMedia[key].media.push(...entry.media);
+            }
+        });
+
+        // Sort by year (descending) and month (descending within each year)
+        const sortedMedia = Object.keys(groupedMedia)
+            .sort((a, b) => {
+                const [yearA, monthA] = a.split('-');
+                const [yearB, monthB] = b.split('-');
+
+                if (yearA !== yearB) return yearB - yearA; // Sort years in descending order
+                return groupedMedia[b].month - groupedMedia[a].month; // Sort months in descending order
+            })
+            .reduce((acc, key) => {
+                acc[key] = groupedMedia[key].media;
+                return acc;
+            }, {});
+
+        res.status(200).json({ success: true, media: sortedMedia });
     } catch (error) {
         console.error("Error fetching media:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
