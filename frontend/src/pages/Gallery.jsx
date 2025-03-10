@@ -52,7 +52,7 @@ const Gallery = () => {
             <Navbar className="z-50" />
             <div className="-ml-7 w-full">
                 <Header />
-                <div>
+                <div className="max-w-6xl mx-auto px-4">
                     <div className="grid grid-cols-4 gap-4 mt-4">
                         {media.length === 0 ? (
                             <p>No media available</p>
