@@ -67,7 +67,7 @@ export function AppSidebar() {
                                     <SidebarMenuButton asChild>
                                         <Link to={item.url}>
                                             <item.icon />
-                                            <span>{item.title}</span>
+                                            <span className="text-base ml-2">{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>

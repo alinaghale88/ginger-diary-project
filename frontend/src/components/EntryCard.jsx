@@ -8,14 +8,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
 
 // Helper function to generate excerpt
-const generateExcerpt = (content, maxLength = 250) => {
+const generateExcerpt = (content, maxLength = 210) => {
     if (!content) return "";
     const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
     return plainTextContent.length > maxLength
@@ -30,18 +29,6 @@ const EntryCard = ({ entry }) => {
 
     const navigate = useNavigate();
 
-    const { deleteEntry } = useEntryStore();
-
-    const handleDeleteEntry = async (eid) => {
-        if (user) {
-            const { success, message } = await deleteEntry(eid, user); // Pass the user to deleteEntry
-            if (success) {
-                toast({ description: 'Entry deleted successfully', duration: 1200 });
-            } else {
-                toast({ variant: "destructive", description: message || 'Error deleting entry', duration: 1200 });
-            }
-        }
-    }
     // Format the timestamp to a readable date
     const formattedDate = new Date(entry.createdAt).toLocaleDateString('en-CA', {
         weekday: 'long',
@@ -50,21 +37,14 @@ const EntryCard = ({ entry }) => {
         day: 'numeric',
     });
     return (
-        <Card className="shadow-lg">
-            <CardHeader className="pb-3 mb-0">
-                <CardDescription className="mb-0 italic">{formattedDate}</CardDescription>
+        <Card className="shadow-lg cursor-pointer mt-8" onClick={() => navigate(`/view-entry/${entry._id}`, { state: { entry } })}>
+            <CardHeader className="pb-3 px-10 mb-0">
+                <CardDescription className="mb-0 font-gotu">{formattedDate}</CardDescription>
             </CardHeader>
-            <CardContent className="pb-0 flex gap-10 mb-0 justify-between">
+            <CardContent className="pb-0 mb-0 px-10">
                 {/* Render the content with innerHTML */}
                 <div className='ql-snow mb-7'>
                     <div className="ql-editor !p-0 mb-0" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
-                </div>
-                <div>
-                    <Eye
-                        className='mb-1.5 w-4'
-                        onClick={() => navigate(`/view-entry/${entry._id}`, { state: { entry } })}
-                    />
-                    <Trash2 className='w-4' onClick={() => handleDeleteEntry(entry._id)} />
                 </div>
             </CardContent>
         </Card>

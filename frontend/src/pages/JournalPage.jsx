@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Check } from 'lucide-react';
 
 const JournalPage = () => {
     const { toast } = useToast();
@@ -120,22 +121,21 @@ const JournalPage = () => {
             <Navbar className="z-50" />
             <div className="-ml-7 w-full">
                 <Header />
-                <div className="max-w-4xl m-auto">
+                <div className="">
                     {/* ReactQuill without value binding to state */}
                     <ReactQuill
                         ref={reactQuillRef}
-                        theme="snow" className="h-[400px]"
+                        theme="snow"
                         placeholder="Start writing..."
                         onChange={() => { }} // No need to track state here
                         modules={{
                             toolbar: {
                                 container: [
-                                    [{ header: "1" }, { header: "2" }, { font: [] }],
+                                    [{ header: "1" }, { header: "2" }],
                                     [{ size: [] }],
                                     ["bold", "italic", "underline", "strike", "blockquote"],
                                     [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
                                     ["link", "image", "video"],
-                                    ["code-block"],
                                     ["clean"],
                                 ],
                                 handlers: {
@@ -145,11 +145,11 @@ const JournalPage = () => {
                             clipboard: { matchVisual: false },
                         }}
                         formats={[
-                            "header", "font", "size", "bold", "italic", "underline", "strike",
-                            "blockquote", "list", "bullet", "indent", "link", "image", "video", "code-block",
+                            "header", "size", "bold", "italic", "underline", "strike",
+                            "blockquote", "list", "bullet", "indent", "link", "image", "video",
                         ]}
                     />
-                    <Button className="mt-[70px]" onClick={handleSaveEntry}>{updatedEntry ? "Update Entry" : "Save Entry"}</Button>
+                    <Button className="fixed bottom-5 right-5 px-4 py-2 " onClick={handleSaveEntry}><Check /></Button>
                 </div>
             </div>
         </div>

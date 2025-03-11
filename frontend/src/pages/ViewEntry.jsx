@@ -39,20 +39,20 @@ const ViewEntry = () => {
                 <Header />
                 {/* Edit Button */}
                 <div className="flex justify-between border-b-2 border-black/5 px-6">
-                    <div>
-                        <ArrowLeft className="w-4 inline-block" onClick={() => navigate('/')} />
-                        <p className="italic text-gray-500 inline-block ml-[20px]">{new Date(entry.createdAt).toLocaleDateString('en-CA', {
+                    <div className="my-[20px]">
+                        <ArrowLeft className="w-6 inline-block" onClick={() => navigate('/')} />
+                        <p className="font-gotu text-gray-500 inline-block ml-[20px]">{new Date(entry.createdAt).toLocaleDateString('en-CA', {
                             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
                         })}</p>
                     </div>
-                    <div>
-                        <Pencil className="w-4 inline-block" onClick={() => navigate('/journal', { state: { entry } })} />
-                        <Trash2 className='w-4 inline-block ml-[20px]' onClick={() => handleDeleteEntry(entry._id)} />
+                    <div className="my-[20px]">
+                        <Pencil className="w-5 inline-block" onClick={() => navigate('/journal', { state: { entry } })} />
+                        <Trash2 className='w-5 inline-block ml-[20px]' onClick={() => handleDeleteEntry(entry._id)} />
                     </div>
                 </div>
-                <div className="max-w-4xl m-auto p-6 rounded-lg shadow-lg">
+                <div className="max-w-4xl m-auto p-6">
 
-                    <div className="ql-snow mt-4">
+                    <div className="ql-snow">
                         <div className="ql-editor !p-0" dangerouslySetInnerHTML={{ __html: entry.content }} />
                     </div>
 

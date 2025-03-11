@@ -115,6 +115,7 @@ textarea {
   body {
     @apply bg-background text-foreground;
     font-family: 'Lora', serif;
+    font-size: 16px;
   }
 }
 
@@ -125,4 +126,24 @@ textarea {
 
 [role="dialog"].fixed {
   border-radius: 0;
+}
+
+.ql-toolbar.ql-snow {
+  padding-block: 20px !important;
+  padding-inline: 1.5rem !important;
+  border: 0 !important;
+  border-bottom: 2px solid rgb(0 0 0 / 0.05) !important;
+}
+
+.ql-container.ql-snow {
+  max-width: 56rem;
+  margin: auto;
+  padding: 1.5rem;
+  border: unset !important;
+  font-family: 'Lora', serif;
+  font-size: 16px;
+}
+
+.ql-editor {
+  padding: 0 !important;
 }
