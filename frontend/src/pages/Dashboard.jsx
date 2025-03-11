@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { useEntryStore } from '../store/entry';
+import { useChapterStore } from '../store/chapter';
 import EntryCard from '../components/EntryCard';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import Header from '@/components/Header';
@@ -9,13 +10,15 @@ import 'react-quill/dist/quill.snow.css';
 
 const Dashboard = () => {
   const { fetchEntries, entries } = useEntryStore();
+  const { fetchChapters, chapters } = useChapterStore();
   const { user } = useAuthContext()
 
   useEffect(() => {
     if (user) {
       fetchEntries(user);
+      fetchChapters(user);
     }
-  }, [fetchEntries, user]);
+  }, [fetchEntries, fetchChapters, user]);
 
   // Sort entries in reverse chronological order
   const sortedEntries = entries && entries.length

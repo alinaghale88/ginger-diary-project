@@ -9,7 +9,11 @@ const entrySchema = new mongoose.Schema({
     user_id: {
         type: String,
         required: true
-    }
+    },
+    chapter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chapter'
+    } // Reference to the Chapter model
 }, {
     timestamps: true // createdAt, updatedAt
 });

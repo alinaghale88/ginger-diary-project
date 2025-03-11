@@ -10,6 +10,7 @@ import Header from './components/Header'
 import Navbar from './components/Navbar'
 import { useAuthContext } from './hooks/useAuthContext'
 import { Toaster } from './components/ui/toaster'
+import CreateChapter from './pages/CreateChapter'
 
 const App = () => {
   const { user } = useAuthContext()
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to="/" />}></Route>
         <Route path="/journal" element={user ? <JournalPage /> : <Navigate to="/login" />}></Route>
         <Route path="/gallery" element={user ? <Gallery /> : <Navigate to="/login" />}></Route>
+        <Route path="/chapter" element={user ? <CreateChapter /> : <Navigate to="/login" />}></Route>
         <Route path="/view-entry/:id" element={user ? <ViewEntry /> : <Navigate to="/login" />}></Route>
       </Routes>
       <Toaster />

@@ -23,7 +23,7 @@ const items = [
     },
     {
         title: "Chapter",
-        url: "#",
+        url: "/chapter",
         icon: BookOpenText,
     },
     {

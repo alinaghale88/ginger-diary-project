@@ -4,6 +4,7 @@ import { connectDB } from "./config/db.js";
 
 import entryRoutes from "./routes/entry.route.js";
 import userRoutes from "./routes/user.route.js";
+import chapterRoutes from "./routes/chapter.route.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json()); // allows us to accept JSON data in the req.body
 // routes
 app.use("/api/user", userRoutes);
 app.use("/api/entries", entryRoutes);
+app.use("/api/chapters", chapterRoutes);
 
 app.listen(5000, () => {
     connectDB();
