@@ -64,7 +64,7 @@ const Gallery = () => {
                     ) : (
                         Object.keys(media).map((monthYear, index) => (
                             <div key={index} className="mb-6">
-                                <h2 className="text-lg font-bold mb-2">{formatMonthYear(monthYear)}</h2>
+                                <h2 className="text-lg font-bold mb-2 font-gotu">{formatMonthYear(monthYear)}</h2>
                                 <div className="grid grid-cols-4 gap-4">
                                     {media[monthYear].map((url, idx) => (
                                         <Dialog key={idx} className="mb-0">
