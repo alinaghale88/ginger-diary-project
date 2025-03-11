@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Pencil, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -30,10 +30,6 @@ const EntryCard = ({ entry }) => {
 
     const navigate = useNavigate();
 
-    const handleEditEntry = (entry) => {
-        // Navigate to JournalPage and pass full entry object using state
-        navigate('/journal', { state: { entry } });
-    };
     const { deleteEntry } = useEntryStore();
 
     const handleDeleteEntry = async (eid) => {
@@ -58,13 +54,16 @@ const EntryCard = ({ entry }) => {
             <CardHeader className="pb-3 mb-0">
                 <CardDescription className="mb-0 italic">{formattedDate}</CardDescription>
             </CardHeader>
-            <CardContent className="pb-0 flex gap-10 mb-0">
+            <CardContent className="pb-0 flex gap-10 mb-0 justify-between">
                 {/* Render the content with innerHTML */}
                 <div className='ql-snow mb-7'>
                     <div className="ql-editor !p-0 mb-0" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
                 </div>
                 <div>
-                    <Pencil className='mb-1.5 w-4' onClick={() => handleEditEntry(entry)} />
+                    <Eye
+                        className='mb-1.5 w-4'
+                        onClick={() => navigate(`/view-entry/${entry._id}`, { state: { entry } })}
+                    />
                     <Trash2 className='w-4' onClick={() => handleDeleteEntry(entry._id)} />
                 </div>
             </CardContent>

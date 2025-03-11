@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import JournalPage from './pages/JournalPage'
 import Gallery from './pages/Gallery'
+import ViewEntry from './pages/ViewEntry'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import { useAuthContext } from './hooks/useAuthContext'
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to="/" />}></Route>
         <Route path="/journal" element={user ? <JournalPage /> : <Navigate to="/login" />}></Route>
         <Route path="/gallery" element={user ? <Gallery /> : <Navigate to="/login" />}></Route>
+        <Route path="/view-entry/:id" element={user ? <ViewEntry /> : <Navigate to="/login" />}></Route>
       </Routes>
       <Toaster />
     </div>

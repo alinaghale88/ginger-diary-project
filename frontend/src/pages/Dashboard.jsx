@@ -27,7 +27,7 @@ const Dashboard = () => {
       <Navbar className='z-50' />
       <div className='-ml-7 w-full'>
         <Header />
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-[700px] mx-auto">
           {sortedEntries.map((entry) => (
             <EntryCard key={entry._id} entry={entry} />
           ))}
