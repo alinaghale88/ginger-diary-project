@@ -39,6 +39,14 @@ const Gallery = () => {
         }
     };
 
+    const formatMonthYear = (monthYear) => {
+        const [year, month] = monthYear.split('-'); // Split "2025-3"
+        const formattedMonth = month.padStart(2, '0'); // Ensure "3" becomes "03"
+        const date = new Date(`${year}-${formattedMonth}-01`); // Create valid date
+
+        return `${date.toLocaleString('en-US', { month: 'long' })} ${year}`;
+    };
+
     useEffect(() => {
         if (user) {
             fetchMedia();
@@ -56,7 +64,7 @@ const Gallery = () => {
                     ) : (
                         Object.keys(media).map((monthYear, index) => (
                             <div key={index} className="mb-6">
-                                <h2 className="text-lg font-bold mb-2">{monthYear}</h2>
+                                <h2 className="text-lg font-bold mb-2">{formatMonthYear(monthYear)}</h2>
                                 <div className="grid grid-cols-4 gap-4">
                                     {media[monthYear].map((url, idx) => (
                                         <Dialog key={idx} className="mb-0">
@@ -65,7 +73,7 @@ const Gallery = () => {
                                             </DialogTrigger>
                                             <DialogContent className="p-0">
                                                 {selectedImage && (
-                                                    <img src={selectedImage} alt="Preview" className="w-full h-auto" />
+                                                    <img src={selectedImage} alt="Preview" className="m-auto" />
                                                 )}
                                             </DialogContent>
                                         </Dialog>
