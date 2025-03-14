@@ -7,18 +7,25 @@ import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
+import UploadImage from '@/components/UploadImage';
 
 const CreateChapter = () => {
     const { toast } = useToast();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [coverImage, setCoverImage] = useState("");
+    const [coverImage, setCoverImage] = useState(null);
     const { user } = useAuthContext();
     const { createChapter } = useChapterStore();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!name || !description) {
+            toast({ variant: "destructive", description: "Please enter all fields", duration: 1200 });
+            return;
+        }
+
         const result = await createChapter({ name, description, coverImage }, user);
         if (result.success) {
             toast({ description: "Chapter created successfully", duration: 1200 });
@@ -45,12 +52,7 @@ const CreateChapter = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
-                    <input
-                        type="text"
-                        placeholder="Cover Image URL"
-                        value={coverImage}
-                        onChange={(e) => setCoverImage(e.target.value)}
-                    />
+                    <UploadImage onUpload={setCoverImage} />
                     <Button onClick={handleSubmit}>Add Category</Button>
                 </div>
             </div>
