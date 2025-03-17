@@ -8,6 +8,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -38,8 +40,17 @@ const EntryCard = ({ entry }) => {
     });
     return (
         <Card className="shadow-lg cursor-pointer mt-8" onClick={() => navigate(`/view-entry/${entry._id}`, { state: { entry } })}>
-            <CardHeader className="pb-3 px-10 mb-0">
+            <CardHeader className="pb-3 px-10 mb-0 flex flex-row flex-wrap justify-between items-center">
                 <CardDescription className="mb-0 font-gotu tracking-[0.4px]">{formattedDate}</CardDescription>
+                {entry.chapter && (
+                    <Badge className="!mt-0" onClick={(e) => {
+                        e.stopPropagation(); // Prevent entry card click from triggering
+                        navigate(`/chapter/${entry.chapter._id}`, { state: { chapter: entry.chapter } });
+                    }}>
+                        {entry.chapter.name}
+                    </Badge>
+                )}
+                <Separator className="!mt-[14px] w-full" />
             </CardHeader>
             <CardContent className="pb-0 mb-0 px-10">
                 {/* Render the content with innerHTML */}

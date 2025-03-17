@@ -1,10 +1,14 @@
 import mongoose from "mongoose";
 import Entry from "../models/entry.model.js";
+import Chapter from "../models/chapter.model.js";
 
 export const getEntry = async (req, res) => {
     try {
         const user_id = req.user._id
-        const entries = await Entry.find({ user_id });
+        const entries = await Entry.find({ user_id }).populate({
+            path: "chapter",
+            select: "name"
+        });
         res.status(200).json({ success: true, data: entries });
     } catch (error) {
         console.log("error in fetching products:", error.message);
