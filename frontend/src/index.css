@@ -138,7 +138,7 @@ textarea {
 }
 
 .ql-container.ql-snow {
-  max-width: 56rem;
+  max-width: 700px;
   margin: auto;
   padding: 1.5rem;
   border: unset !important;
@@ -148,4 +148,6 @@ textarea {
 
 .ql-editor {
   padding: 0 !important;
+  line-height: 1.75rem !important;
+  letter-spacing: 0.4px !important;
 }

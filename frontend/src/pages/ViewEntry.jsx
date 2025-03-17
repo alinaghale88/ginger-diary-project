@@ -47,13 +47,13 @@ const ViewEntry = () => {
                             })}
                         </p>
                     </div>
-                    <div className="my-[20px] flex items-center space-x-4">
+                    <div className="my-[20px] flex items-center space-x-5">
                         <Pencil className="w-5 cursor-pointer" onClick={() => navigate('/journal', { state: { entry } })} />
                         <Trash2 className='w-5 cursor-pointer' onClick={() => handleDeleteEntry(entry._id)} />
                     </div>
                 </div>
 
-                <div className="max-w-4xl m-auto p-6">
+                <div className="max-w-[700px] mx-auto p-6">
                     <div className="ql-snow">
                         <div className="ql-editor !p-0 !leading-relaxed !tracking-[0.4px]" dangerouslySetInnerHTML={{ __html: entry.content }} />
                     </div>
