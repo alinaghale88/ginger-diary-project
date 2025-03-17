@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const ChapterDropdown = ({ selectedChapter, onChapterChange, chapters }) => {
     return (
         <Select value={selectedChapter} onValueChange={onChapterChange}>
-            <SelectTrigger id="chapter-select">
+            <SelectTrigger id="chapter-select" className="max-w-[200px] absolute mt-[15px] right-5">
                 <SelectValue placeholder="Choose a chapter" />
             </SelectTrigger>
             <SelectContent>

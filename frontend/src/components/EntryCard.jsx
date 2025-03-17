@@ -39,12 +39,12 @@ const EntryCard = ({ entry }) => {
     return (
         <Card className="shadow-lg cursor-pointer mt-8" onClick={() => navigate(`/view-entry/${entry._id}`, { state: { entry } })}>
             <CardHeader className="pb-3 px-10 mb-0">
-                <CardDescription className="mb-0 font-gotu">{formattedDate}</CardDescription>
+                <CardDescription className="mb-0 font-gotu tracking-[0.4px]">{formattedDate}</CardDescription>
             </CardHeader>
             <CardContent className="pb-0 mb-0 px-10">
                 {/* Render the content with innerHTML */}
                 <div className='ql-snow mb-7'>
-                    <div className="ql-editor !p-0 mb-0" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
+                    <div className="ql-editor !p-0 mb-0 !leading-relaxed !tracking-[0.4px]" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
                 </div>
             </CardContent>
         </Card>

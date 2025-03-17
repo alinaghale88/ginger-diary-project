@@ -55,7 +55,7 @@ const ViewEntry = () => {
 
                 <div className="max-w-4xl m-auto p-6">
                     <div className="ql-snow">
-                        <div className="ql-editor !p-0" dangerouslySetInnerHTML={{ __html: entry.content }} />
+                        <div className="ql-editor !p-0 !leading-relaxed !tracking-[0.4px]" dangerouslySetInnerHTML={{ __html: entry.content }} />
                     </div>
                 </div>
             </div>
