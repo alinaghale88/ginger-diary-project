@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useEntryStore } from '../store/entry';
 import { useChapterStore } from '../store/chapter';
 import EntryCard from '../components/EntryCard';
+import ChapterCard from '../components/ChapterCard';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
@@ -30,6 +31,16 @@ const Dashboard = () => {
       <Navbar className='z-50' />
       <div className='-ml-7 w-full'>
         <Header />
+        <div>
+          <h2>Your Chapters</h2>
+          {chapters && chapters.length ? (
+            chapters.map((chapter) => (
+              <ChapterCard key={chapter._id} chapter={chapter} />
+            ))
+          ) : (
+            <p>No chapters available. <Link to="/create-chapter">Create one now</Link></p>
+          )}
+        </div>
         <div className="max-w-[700px] mx-auto">
           {sortedEntries.map((entry) => (
             <EntryCard key={entry._id} entry={entry} />

@@ -36,3 +36,19 @@ export const getChapters = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
+
+// Fetch a single chapter by ID
+export const getChapterById = async (req, res) => {
+    try {
+        const chapter = await Chapter.findById(req.params.id);
+        if (!chapter) {
+            return res.status(404).json({ success: false, message: "Chapter not found" });
+        }
+        res.status(200).json({ success: true, data: chapter });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+
+

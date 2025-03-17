@@ -102,5 +102,15 @@ export const useEntryStore = create((set) => ({
         }));
 
         return { success: true, message: "Entry updated successfully" };
-    }
+    },
+    fetchEntriesByChapter: async (chapterId) => {
+        const res = await fetch(`/api/entries?chapterId=${chapterId}`, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`, // 🔹 Include Token
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        set({ entries: data.data });
+    },
 }));
