@@ -42,13 +42,16 @@ const JournalPage = () => {
     const reactQuillRef = useRef(null);
 
     // Define state for the selected chapter
-    const [selectedChapter, setSelectedChapter] = useState(entry?.chapter || '');
+    const [selectedChapter, setSelectedChapter] = useState('');
 
-    // Load entry content only once when editing an entry
+    // Load entry content and set the selected chapter when editing an entry
     useEffect(() => {
-        if (entry && reactQuillRef.current) {
-            const editor = reactQuillRef.current.getEditor();
-            editor.clipboard.dangerouslyPasteHTML(entry.content);
+        if (entry) {
+            setSelectedChapter(entry.chapter?._id || ''); // Set the selected chapter if exists
+            if (reactQuillRef.current) {
+                const editor = reactQuillRef.current.getEditor();
+                editor.clipboard.dangerouslyPasteHTML(entry.content);
+            }
         }
     }, [entry]);
 
