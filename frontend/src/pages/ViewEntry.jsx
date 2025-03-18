@@ -41,8 +41,13 @@ const ViewEntry = () => {
         if (user) {
             const { success, message } = await deleteEntry(eid, user);
             if (success) {
-                toast({ description: 'Entry deleted successfully', duration: 1200 });
+                // Navigate to the dashboard first
                 navigate('/');
+
+                // Display the toast after a slight delay
+                setTimeout(() => {
+                    toast({ description: 'Entry deleted successfully', duration: 1200 });
+                }, 100);
             } else {
                 toast({ variant: "destructive", description: message || 'Error deleting entry', duration: 1200 });
             }
