@@ -20,7 +20,7 @@ const ViewChapter = () => {
             const chapterData = await getChapterById(id, user);
             if (chapterData) {
                 setChapter(chapterData);
-                fetchEntriesByChapter(id, user);
+                await fetchEntriesByChapter(id, user);
             }
         };
         fetchData();
@@ -33,30 +33,34 @@ const ViewChapter = () => {
             <Navbar className="z-50" />
             <div className="-ml-7 w-full">
                 <Header />
-                <div className="max-w-[700px] mx-auto mt-7">
+                <div className="max-w-6xl mx-auto px-4 mt-7 flex flex-wrap flex-row">
                     {/* Chapter Details */}
-                    <div className="mb-5">
-                        {chapter.coverImage && (
-                            <img src={chapter.coverImage} alt="Cover" className="w-full h-48 object-cover rounded-lg" />
-                        )}
-                        <h1 className="text-2xl font-bold mt-3">{chapter.name}</h1>
-                        <p className="text-gray-500">{chapter.description}</p>
-                    </div>
-
-                    {/* List of Entries */}
-                    <h2 className="text-xl font-semibold mt-5">Entries</h2>
-                    {entries.length > 0 ? (
-                        <div className="grid gap-4">
-                            {entries.map((entry) => (
-                                <EntryCard key={entry._id} entry={entry} />
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-gray-500 mt-2">No entries in this chapter yet.</p>
+                    <h2 className="text-xl font-bold mb-5 font-gotu tracking-[0.4px] w-full">Chapter: {chapter.name}</h2>
+                    {chapter.coverImage && (
+                        <img src={chapter.coverImage} alt="Cover" className="md:basis-1/2 lg:basis-1/3 h-[220px] object-cover rounded-lg" />
                     )}
+
+                    <p className="flex-1 pl-12 max-w-[700px]">{chapter.description}</p>
+
+                </div>
+
+                {/* List of Entries */}
+                <div className="max-w-6xl mx-auto px-4 mt-12">
+                    <h2 className="text-xl font-bold font-gotu tracking-[0.4px]">Entries</h2>
+                    <div className="max-w-[700px] mx-auto">
+                        {entries.length > 0 ? (
+                            <div>
+                                {entries.map((entry) => (
+                                    <EntryCard key={entry._id} entry={entry} />
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-gray-500 mt-2">No entries in this chapter yet.</p>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

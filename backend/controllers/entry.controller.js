@@ -43,6 +43,34 @@ export const getEntryById = async (req, res) => {
     }
 };
 
+// Fetch all entries for a specific chapter
+export const getEntryByChapterId = async (req, res) => {
+    try {
+        const user_id = req.user._id;
+        const { chapterId } = req.params; // Get chapter ID from URL params
+
+        if (!mongoose.Types.ObjectId.isValid(chapterId)) {
+            return res.status(400).json({ success: false, message: "Invalid Chapter ID" });
+        }
+
+        const entries = await Entry.find({ user_id, chapter: chapterId })
+            .select("content createdAt chapter")
+            .populate({ path: "chapter", select: "name" })
+            .sort({ createdAt: -1 });
+
+        const processedEntries = entries.map(entry => ({
+            _id: entry._id,
+            createdAt: entry.createdAt,
+            chapter: entry.chapter,
+            excerpt: entry.content.replace(/<[^>]*>/g, "").substring(0, 210) + "..."
+        }));
+
+        res.status(200).json({ success: true, data: processedEntries });
+    } catch (error) {
+        console.error("Error fetching entries by chapter ID:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
 
 
 export const createEntry = async (req, res) => {

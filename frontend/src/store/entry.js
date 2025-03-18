@@ -104,14 +104,21 @@ export const useEntryStore = create((set) => ({
 
         return { success: true, message: "Entry updated successfully" };
     },
-    fetchEntriesByChapter: async (chapterId) => {
-        const res = await fetch(`/api/entries?chapterId=${chapterId}`, {
+
+    fetchEntriesByChapter: async (chapterId, user) => {
+        if (!user) return;
+
+        const res = await fetch(`/api/entries/chapter/${chapterId}`, { // New route
             headers: {
-                'Authorization': `Bearer ${user.token}`, // 🔹 Include Token
+                'Authorization': `Bearer ${user.token}`,
                 'Content-Type': 'application/json',
             },
         });
+
         const data = await res.json();
-        set({ entries: data.data });
+        if (data.success) {
+            set({ entries: data.data });
+        }
     },
+
 }));

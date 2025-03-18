@@ -42,12 +42,12 @@ const Dashboard = () => {
       <div className='-ml-7 w-full'>
         <Header />
         <div className="max-w-6xl mx-auto px-4 mt-7">
-          <h2 className='text-xl font-bold mb-2 font-gotu tracking-[0.4px]'>Chapters</h2>
+          <h2 className='text-xl font-bold mb-4 font-gotu tracking-[0.4px]'>Chapters</h2>
           {chapters && chapters.length ? (
-            <Carousel className="w-full" plugins={[plugin.current]} loop
+            <Carousel className="w-full mb-0" plugins={[plugin.current]} loop
               onMouseEnter={plugin.current.stop}
               onMouseLeave={plugin.current.reset}>
-              <CarouselContent>
+              <CarouselContent className="mb-0">
                 {chapters.map((chapter) => (
                   <CarouselItem className="md:basis-1/2 lg:basis-1/3" key={chapter._id}>
                     <div className="p-1">
@@ -64,7 +64,7 @@ const Dashboard = () => {
           )}
         </div>
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className='text-xl font-bold mb-2 font-gotu tracking-[0.4px]'>Entries</h2>
+          <h2 className='text-xl font-bold font-gotu tracking-[0.4px]'>Entries</h2>
           <div className="max-w-[700px] mx-auto">
             {sortedEntries.map((entry) => (
               <EntryCard key={entry._id} entry={entry} />
