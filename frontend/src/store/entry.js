@@ -25,17 +25,18 @@ export const useEntryStore = create((set) => ({
         return { success: true, message: "Entry created successfully" };
     },
     fetchEntries: async (user) => {
-        if (!user) {
-            return
-        }
+        if (!user) return;
+
         const res = await fetch("/api/entries", {
-            headers: {
-                'Authorization': `Bearer ${user.token}`
-            }
+            headers: { 'Authorization': `Bearer ${user.token}` }
         });
+
         const data = await res.json();
-        set({ entries: data.data });
+        if (data.success) {
+            set({ entries: data.data }); // Store only excerpt
+        }
     },
+
 
     fetchMedia: async (user) => {
         if (!user) return;

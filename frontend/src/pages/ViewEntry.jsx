@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useEntryStore } from "@/store/entry";
 import Navbar from "@/components/Navbar";
 import Header from "@/components/Header";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const ViewEntry = () => {
     const { deleteEntry } = useEntryStore();
@@ -14,8 +14,28 @@ const ViewEntry = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const entry = location.state?.entry;
     const { user } = useAuthContext();
+
+    const [fullEntry, setFullEntry] = useState(null);
+    const [loading, setLoading] = useState(true); // Add loading state
+
+    useEffect(() => {
+        if (id && user) {
+            fetch(`/api/entries/${id}`, {
+                headers: { 'Authorization': `Bearer ${user.token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        setFullEntry(data.data);
+                    } else {
+                        toast({ variant: "destructive", description: "Error loading entry", duration: 1200 });
+                    }
+                })
+                .catch(() => toast({ variant: "destructive", description: "Failed to fetch entry", duration: 1200 }))
+                .finally(() => setLoading(false)); // Mark loading complete
+        }
+    }, [id, user, toast]);
 
     const handleDeleteEntry = async (eid) => {
         if (user) {
@@ -29,7 +49,11 @@ const ViewEntry = () => {
         }
     }
 
-    if (!entry) {
+    if (loading) {
+        return <p className="text-center text-gray-500">Loading entry...</p>;
+    }
+
+    if (!fullEntry) {
         return <p className="text-center text-red-500">Entry not found</p>;
     }
 
@@ -42,20 +66,31 @@ const ViewEntry = () => {
                     <div className="my-[20px]">
                         <ArrowLeft className="w-6 inline-block cursor-pointer" onClick={() => navigate('/')} />
                         <p className="font-gotu text-gray-500 inline-block ml-[20px]">
-                            {new Date(entry.createdAt).toLocaleDateString('en-CA', {
+                            {new Date(fullEntry.createdAt).toLocaleDateString('en-CA', {
                                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
                             })}
                         </p>
                     </div>
                     <div className="my-[20px] flex items-center space-x-5">
-                        <Pencil className="w-5 cursor-pointer" onClick={() => navigate('/journal', { state: { entry } })} />
-                        <Trash2 className='w-5 cursor-pointer' onClick={() => handleDeleteEntry(entry._id)} />
+                        <Pencil className="w-5 cursor-pointer" onClick={() => navigate('/journal', { state: { entry: fullEntry } })} />
+                        <Trash2 className='w-5 cursor-pointer' onClick={() => handleDeleteEntry(fullEntry._id)} />
                     </div>
                 </div>
 
-                <div className="max-w-[700px] mx-auto p-6">
+                <div className="max-w-[700px] mx-auto px-6 mt-7">
+                    <div>
+                        {fullEntry.chapter && (
+                            <Badge className="!mt-0 cursor-pointer" onClick={() => {
+                                navigate(`/chapter/${fullEntry.chapter._id}`, { state: { chapter: fullEntry.chapter } });
+                            }}>
+                                {fullEntry.chapter.name}
+                            </Badge>
+                        )}
+                    </div>
                     <div className="ql-snow">
-                        <div className="ql-editor !p-0 !leading-relaxed !tracking-[0.4px]" dangerouslySetInnerHTML={{ __html: entry.content }} />
+                        <div className="ql-editor !p-0 !leading-relaxed !tracking-[0.4px]"
+                            dangerouslySetInnerHTML={{ __html: fullEntry.content }}>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,3 +99,4 @@ const ViewEntry = () => {
 };
 
 export default ViewEntry;
+

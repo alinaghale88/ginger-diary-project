@@ -2,19 +2,48 @@ import mongoose from "mongoose";
 import Entry from "../models/entry.model.js";
 import Chapter from "../models/chapter.model.js";
 
+// Fetch all entries for the Dashboard page
 export const getEntry = async (req, res) => {
     try {
-        const user_id = req.user._id
-        const entries = await Entry.find({ user_id }).populate({
-            path: "chapter",
-            select: "name"
-        });
-        res.status(200).json({ success: true, data: entries });
+        const user_id = req.user._id;
+        const entries = await Entry.find({ user_id })
+            .select("content createdAt chapter") // Fetch only necessary fields
+            .populate({ path: "chapter", select: "name" }) // Populate chapter name
+            .sort({ createdAt: -1 });
+
+        // Generate excerpts instead of sending full content
+        const processedEntries = entries.map(entry => ({
+            _id: entry._id,
+            createdAt: entry.createdAt,
+            chapter: entry.chapter,
+            excerpt: entry.content.replace(/<[^>]*>/g, "").substring(0, 210) + "..."
+        }));
+
+        res.status(200).json({ success: true, data: processedEntries });
     } catch (error) {
-        console.log("error in fetching products:", error.message);
+        console.error("Error fetching entries:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
-}
+};
+
+// Fetch a single entry by ID for the ViewEntry page
+export const getEntryById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const entry = await Entry.findById(id).populate("chapter", "name");
+
+        if (!entry) {
+            return res.status(404).json({ success: false, message: "Entry not found" });
+        }
+
+        res.status(200).json({ success: true, data: entry }); // Full content is sent
+    } catch (error) {
+        console.error("Error fetching entry:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+
 
 export const createEntry = async (req, res) => {
     const entry = req.body; // user will send this data

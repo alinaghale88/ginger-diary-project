@@ -55,7 +55,7 @@ const EntryCard = ({ entry }) => {
             <CardContent className="pb-0 mb-0 px-10">
                 {/* Render the content with innerHTML */}
                 <div className='ql-snow mb-7'>
-                    <div className="ql-editor !p-0 mb-0 !leading-relaxed !tracking-[0.4px]" dangerouslySetInnerHTML={{ __html: generateExcerpt(entry.content) }} />
+                    <div className="ql-editor !p-0 mb-0 !leading-relaxed !tracking-[0.4px]">{entry.excerpt}</div>
                 </div>
             </CardContent>
         </Card>
