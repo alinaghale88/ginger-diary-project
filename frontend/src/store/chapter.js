@@ -66,4 +66,22 @@ export const useChapterStore = create((set) => ({
         }
     },
 
+    deleteChapter: async (id, user) => {
+        try {
+            const res = await fetch(`/api/chapters/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            });
+
+            const data = await res.json();
+            return data;
+        } catch (error) {
+            console.error("Error deleting chapter:", error);
+            return { success: false };
+        }
+    },
+
 }));
