@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useChapterStore } from "../store/chapter";
 import { useEntryStore } from "../store/entry";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import EntryCard from "@/components/EntryCard";
+import { Pencil, ArrowLeft, Trash2 } from "lucide-react";
 
 const ViewChapter = () => {
     const { id } = useParams();
@@ -13,6 +14,7 @@ const ViewChapter = () => {
     const { getChapterById } = useChapterStore();
     const { fetchEntriesByChapter, entries } = useEntryStore();
     const [chapter, setChapter] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +35,15 @@ const ViewChapter = () => {
             <Navbar className="z-50" />
             <div className="-ml-7 w-full">
                 <Header />
+                <div className="flex justify-between border-b-2 border-black/5 px-6">
+                    <div className="my-[20px]">
+                        <ArrowLeft className="w-6 inline-block cursor-pointer" onClick={() => navigate('/')} />
+                    </div>
+                    <div className="my-[20px] flex items-center space-x-5">
+                        <Pencil className="w-5 cursor-pointer" onClick={() => navigate('/journal', { state: { entry: fullEntry } })} />
+                        <Trash2 className='w-5 cursor-pointer' onClick={() => handleDeleteEntry(fullEntry._id)} />
+                    </div>
+                </div>
                 <div className="max-w-6xl mx-auto px-4 mt-7 flex flex-wrap flex-row">
                     {/* Chapter Details */}
                     <h2 className="text-xl font-bold mb-5 font-gotu tracking-[0.4px] w-full">Chapter: {chapter.name}</h2>

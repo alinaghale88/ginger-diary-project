@@ -61,7 +61,7 @@ const UploadImage = ({ onUpload }) => {
             {/* Drag & Drop Upload Area */}
             <div
                 {...getRootProps()}
-                className={`border-dashed border-2 p-6 text-center cursor-pointer mt-3 
+                className={`border-dashed border-2 rounded-lg p-6 text-center cursor-pointer mt-3 
                 ${isDragActive ? "border-yellow-300" : "border-gray-400"}`
                 }
             >
@@ -69,7 +69,7 @@ const UploadImage = ({ onUpload }) => {
                 {isDragActive ? (
                     <p className="text-yellow-400">Drop the image here...</p>
                 ) : (
-                    <p>Drag & Drop an image here, or click to select one (Max 2MB)</p>
+                    <p className='text-gray-400'>Drag & Drop an image here, or click to select one (Max 2MB)</p>
                 )}
             </div>
 
@@ -79,7 +79,7 @@ const UploadImage = ({ onUpload }) => {
                     <img
                         src={imageUrl}
                         alt="Uploaded Preview"
-                        className="mt-3 rounded-lg"
+                        className="mt-3 rounded-xl"
                     />
                     <button
                         onClick={handleRemoveImage}

@@ -40,11 +40,11 @@ const CreateChapter = () => {
             <Navbar className="z-50" />
             <div className="-ml-7 w-full">
                 <Header />
-                <div className="max-w-[700px] mx-auto mt-7">
+                <div className="max-w-[700px] mx-auto mt-8 px-6">
                     <input
                         type="text"
                         placeholder="Chapter Name"
-                        value={name}
+                        value={name} className='mb-4'
                         onChange={(e) => setName(e.target.value)}
                     />
                     <textarea
@@ -53,7 +53,7 @@ const CreateChapter = () => {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <UploadImage onUpload={setCoverImage} />
-                    <Button onClick={handleSubmit}>Add Category</Button>
+                    <Button onClick={handleSubmit}>Add Chapter</Button>
                 </div>
             </div>
         </div>
