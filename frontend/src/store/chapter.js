@@ -42,6 +42,28 @@ export const useChapterStore = create((set) => ({
         });
         const data = await res.json();
         return data.data; // Ensure it returns the chapter object
-    }
+    },
+    updateChapter: async (id, chapterData, user) => {
+        try {
+            const response = await fetch(`/api/chapters/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.token}`,
+                },
+                body: JSON.stringify(chapterData),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                return { success: true, chapter: data.chapter };
+            } else {
+                return { success: false, message: data.message };
+            }
+        } catch (error) {
+            console.error("Error updating chapter:", error);
+            return { success: false, message: "Failed to update chapter" };
+        }
+    },
 
 }));

@@ -1,14 +1,21 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone'
 import { useToast } from '@/hooks/use-toast';
 import { X } from 'lucide-react';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
-const UploadImage = ({ onUpload }) => {
+const UploadImage = ({ onUpload, initialImage }) => {
     const { toast } = useToast();
     const [imageUrl, setImageUrl] = useState(null);
     const [uploading, setUploading] = useState(false);
+
+    // Use the initialImage prop to populate the image if editing
+    useEffect(() => {
+        if (initialImage) {
+            setImageUrl(initialImage); // Set the initial image URL (if any)
+        }
+    }, [initialImage]);
 
     const uploadToCloudinary = async (file) => {
         const formData = new FormData();

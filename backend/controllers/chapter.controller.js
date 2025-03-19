@@ -52,3 +52,24 @@ export const getChapterById = async (req, res) => {
 };
 
 
+// Update chapter details
+export const updateChapter = async (req, res) => {
+    const { id } = req.params;
+    const { name, description, coverImage } = req.body;
+
+    try {
+        const updatedChapter = await Chapter.findByIdAndUpdate(
+            id,
+            { name, description, coverImage },
+            { new: true } // Return the updated chapter
+        );
+
+        if (!updatedChapter) {
+            return res.status(404).json({ success: false, message: "Chapter not found" });
+        }
+
+        res.status(200).json({ success: true, data: updatedChapter });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};

@@ -1,9 +1,8 @@
-// CreateChapter.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useChapterStore } from '../store/chapter';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthContext } from '@/hooks/useAuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
@@ -15,8 +14,24 @@ const CreateChapter = () => {
     const [description, setDescription] = useState("");
     const [coverImage, setCoverImage] = useState(null);
     const { user } = useAuthContext();
-    const { createChapter } = useChapterStore();
+    const { id } = useParams(); // Get the chapter ID from the URL
+    const { getChapterById, createChapter, updateChapter } = useChapterStore();
     const navigate = useNavigate();
+
+    // Fetch chapter data if editing an existing chapter
+    useEffect(() => {
+        if (id) {
+            const fetchChapterData = async () => {
+                const chapterData = await getChapterById(id, user);
+                if (chapterData) {
+                    setName(chapterData.name);
+                    setDescription(chapterData.description);
+                    setCoverImage(chapterData.coverImage); // Set the current image URL for editing
+                }
+            };
+            fetchChapterData();
+        }
+    }, [id, user, getChapterById]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,12 +41,26 @@ const CreateChapter = () => {
             return;
         }
 
-        const result = await createChapter({ name, description, coverImage }, user);
-        if (result.success) {
-            toast({ description: "Chapter created successfully", duration: 1200 });
-            navigate('/');
+        const chapterData = { name, description, coverImage };
+
+        if (id) {
+            // Update existing chapter if ID exists
+            const result = await updateChapter(id, chapterData, user);
+            if (result.success) {
+                toast({ description: "Chapter updated successfully", duration: 1200 });
+                navigate('/');
+            } else {
+                toast({ variant: "destructive", description: "There was an error updating your chapter", duration: 1200 });
+            }
         } else {
-            toast({ variant: "destructive", description: "There was an error creating your chapter", duration: 1200 });
+            // Create new chapter if no ID
+            const result = await createChapter(chapterData, user);
+            if (result.success) {
+                toast({ description: "Chapter created successfully", duration: 1200 });
+                navigate('/');
+            } else {
+                toast({ variant: "destructive", description: "There was an error creating your chapter", duration: 1200 });
+            }
         }
     };
 
@@ -40,7 +69,7 @@ const CreateChapter = () => {
             <Navbar className="z-50" />
             <div className="-ml-7 w-full">
                 <Header />
-                <div className="max-w-[700px] mx-auto mt-8 px-6">
+                <div className="max-w-[700px] mx-auto mt-7 px-6">
                     <input
                         type="text"
                         placeholder="Chapter Name"
@@ -52,8 +81,15 @@ const CreateChapter = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
-                    <UploadImage onUpload={setCoverImage} />
-                    <Button onClick={handleSubmit}>Add Chapter</Button>
+                    {/* Pass the initial cover image URL if available */}
+                    <UploadImage
+                        onUpload={setCoverImage}
+                        initialImage={coverImage} // Pass the current cover image URL here
+                    />
+                    {/* Change button text based on if you're editing or creating */}
+                    <Button onClick={handleSubmit}>
+                        {id ? "Update Chapter" : "Add Chapter"}
+                    </Button>
                 </div>
             </div>
         </div>
