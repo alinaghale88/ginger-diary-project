@@ -69,7 +69,7 @@ const Gallery = () => {
                                     {media[monthYear].map((url, idx) => (
                                         <Dialog key={idx} className="mb-0">
                                             <DialogTrigger asChild>
-                                                <img src={url} alt={`media-${idx}`} className="rounded-xl cursor-pointer" onClick={() => setSelectedImage(url)} />
+                                                <img src={url} alt={`media-${idx}`} className="rounded-xl cursor-pointer p-1" onClick={() => setSelectedImage(url)} />
                                             </DialogTrigger>
                                             <DialogContent className="p-0">
                                                 {selectedImage && (

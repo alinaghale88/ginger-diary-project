@@ -10,6 +10,8 @@ router.use(requireAuth);
 
 router.get("/", getEntry); // get all entries 
 
+router.get("/media", getAllMedia); // get all media
+
 router.get("/:id", getEntryById); // get entry by id
 
 router.post("/", createEntry);
@@ -19,8 +21,5 @@ router.put("/:id", updateEntry)
 router.delete("/:id", deleteEntry);
 
 router.get("/chapter/:chapterId", getEntryByChapterId);
-
-// New route to fetch all media URLs
-router.get("/media", getAllMedia);
 
 export default router;
