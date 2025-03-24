@@ -3,6 +3,7 @@ import { useLogout } from "@/hooks/useLogout"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import {
     Sidebar,
+    SidebarHeader,
     SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
@@ -58,6 +59,13 @@ export function AppSidebar() {
     }
     return (
         <Sidebar>
+            <SidebarHeader className="items-center">
+                <div className="px-4 py-1 flex items-center">
+                    <Link to="/">
+                        <img src="ginger-diary-logo.png" alt="Ginger Diary Logo" className="w-40" />
+                    </Link>
+                </div>
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>

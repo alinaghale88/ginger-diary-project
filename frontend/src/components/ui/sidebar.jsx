@@ -343,7 +343,7 @@ const SidebarGroup = React.forwardRef(({ className, ...props }, ref) => {
     (<div
       ref={ref}
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      className={cn("relative flex w-full min-w-0 flex-col pl-12", className)}
       {...props} />)
   );
 })
@@ -398,7 +398,7 @@ const SidebarMenu = React.forwardRef(({ className, ...props }, ref) => (
   <ul
     ref={ref}
     data-sidebar="menu"
-    className={cn("flex w-full min-w-0 flex-col gap-1", className)}
+    className={cn("flex w-full min-w-0 flex-col gap-3", className)}
     {...props} />
 ))
 SidebarMenu.displayName = "SidebarMenu"

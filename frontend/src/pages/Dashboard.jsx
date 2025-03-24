@@ -50,7 +50,7 @@ const Dashboard = () => {
               <CarouselContent className="mb-0">
                 {chapters.map((chapter) => (
                   <CarouselItem className="md:basis-1/2 lg:basis-1/3" key={chapter._id}>
-                    <div className="p-1">
+                    <div className="p-4 rounded-xl border">
                       <ChapterCard chapter={chapter} />
                     </div>
                   </CarouselItem>

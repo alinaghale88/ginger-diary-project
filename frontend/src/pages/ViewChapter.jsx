@@ -56,6 +56,7 @@ const ViewChapter = () => {
                 <div className="flex justify-between border-b-2 border-black/5 px-6">
                     <div className="my-[20px]">
                         <ArrowLeft className="w-6 inline-block cursor-pointer" onClick={() => navigate('/')} />
+                        <p className="font-gotu text-gray-500 inline-block ml-[20px]">Chapter: {chapter.name}</p>
                     </div>
                     <div className="my-[20px] flex items-center space-x-5">
                         <Pencil className="w-5 cursor-pointer" onClick={() => navigate(`/create-chapter/${id}`)} />
@@ -64,7 +65,6 @@ const ViewChapter = () => {
                 </div>
                 <div className="max-w-6xl mx-auto px-4 mt-7 flex flex-wrap flex-row">
                     {/* Chapter Details */}
-                    <h2 className="text-xl font-bold mb-5 font-gotu tracking-[0.4px] w-full">Chapter: {chapter.name}</h2>
                     {chapter.coverImage && (
                         <img src={chapter.coverImage} alt="Cover" className="md:basis-1/2 lg:basis-1/3 h-[220px] object-cover rounded-lg" />
                     )}
