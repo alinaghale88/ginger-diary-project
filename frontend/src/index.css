@@ -151,3 +151,7 @@ textarea {
   line-height: 1.75rem !important;
   letter-spacing: 0.4px !important;
 }
+
+.ql-editor.ql-blank::before {
+  font-style: normal !important;
+}

@@ -45,7 +45,7 @@ const Login = () => {
         <div className="flex justify-center items-center min-h-screen">
             <Card className="w-[400px] shadow-lg">
                 <CardHeader className="m-0 px-[52px] pt-[44px] pb-0">
-                    <CardTitle className="text-2xl">Log In</CardTitle>
+                    <CardTitle className="text-2xl font-gotu">Log In</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>

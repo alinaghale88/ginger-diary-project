@@ -13,7 +13,21 @@ import {
     SidebarMenuItem,
     SidebarFooter
 } from "@/components/ui/sidebar"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter
+} from "@/components/ui/dialog"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useChapterStore } from "@/store/chapter"
 
 // Menu items.
 const items = [
@@ -37,16 +51,6 @@ const items = [
         url: "/gallery",
         icon: Images,
     },
-    {
-        title: "Export",
-        url: "#",
-        icon: FolderOutput,
-    },
-    {
-        title: "Profile",
-        url: "#",
-        icon: UserPen,
-    },
 ]
 
 export function AppSidebar() {
@@ -57,12 +61,26 @@ export function AppSidebar() {
     const handleClick = () => {
         logout()
     }
+
+    const { chapters, fetchChapters } = useChapterStore(); // Fetch chapters from store
+
+    const [selectedChapter, setSelectedChapter] = useState(null); // Store selected chapter
+    const [loading, setLoading] = useState(false);
+
+    // Fetch all chapters when the modal opens
+    useEffect(() => {
+        if (user) {
+            fetchChapters(user);
+        }
+    }, [fetchChapters, user]);
+
+
     return (
         <Sidebar>
             <SidebarHeader className="items-center">
                 <div className="px-4 py-1 flex items-center">
                     <Link to="/">
-                        <img src="ginger-diary-logo.png" alt="Ginger Diary Logo" className="w-40" />
+                        <img src="/ginger-diary-logo.png" alt="Ginger Diary Logo" className="w-40" />
                     </Link>
                 </div>
             </SidebarHeader>
@@ -75,25 +93,68 @@ export function AppSidebar() {
                                     <SidebarMenuButton asChild>
                                         <Link to={item.url}>
                                             <item.icon />
-                                            <span className="text-base ml-2">{item.title}</span>
+                                            <span className="text-base ml-2 tracking-wider">{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
+                            <SidebarMenuItem>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <SidebarMenuButton>
+                                            <FolderOutput /><span className="text-base ml-2">Export</span>
+                                        </SidebarMenuButton>
+                                    </DialogTrigger>
+                                    <DialogContent className="!rounded-xl">
+                                        <DialogHeader>
+                                            <DialogTitle>Export Chapter</DialogTitle>
+                                            <p>Select a chapter to export as a PDF.</p>
+                                        </DialogHeader>
+                                        {/* Dropdown to select a chapter */}
+                                        {!loading && (
+                                            <div className="relative">
+                                                <Select onValueChange={(value) => {
+                                                    const chapter = chapters.find(ch => ch._id === value);
+                                                    setSelectedChapter(chapter);
+                                                }}>
+                                                    <SelectTrigger className="max-w-[200px]">
+                                                        <SelectValue placeholder="Choose a Chapter" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {chapters.map((chapter) => (
+                                                            <SelectItem key={chapter._id} value={chapter._id}>
+                                                                {chapter.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                        )}
+
+                                        <DialogFooter>
+                                            <Button type="submit">Confirm</Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <SidebarMenuButton>
+                                            <UserPen /><span className="text-base ml-2">{user.email}</span>
+                                        </SidebarMenuButton>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="start">
+                                        <DropdownMenuItem className="mb-0" onClick={handleClick}>
+                                            Logout
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
-                {user && (
-                    <div>
-                        <span>{user.email}</span>
-                        <SidebarMenuButton asChild onClick={handleClick}>
-                            <span className="text-red-500 cursor-pointer">Logout</span>
-                        </SidebarMenuButton>
-                    </div>
-                )}
-            </SidebarFooter>
         </Sidebar>
     )
 }

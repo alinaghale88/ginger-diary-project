@@ -43,7 +43,7 @@ const EntryCard = ({ entry }) => {
             <CardHeader className="pb-3 px-10 mb-0 flex flex-row flex-wrap justify-between items-center">
                 <CardDescription className="mb-0 font-gotu tracking-[0.4px]">{formattedDate}</CardDescription>
                 {entry.chapter && (
-                    <Badge className="!mt-0" onClick={(e) => {
+                    <Badge className="!mt-0 tracking-wider" onClick={(e) => {
                         e.stopPropagation(); // Prevent entry card click from triggering
                         navigate(`/chapter/${entry.chapter._id}`, { state: { chapter: entry.chapter } });
                     }}>
