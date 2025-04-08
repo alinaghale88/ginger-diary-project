@@ -36,7 +36,7 @@ export const useChapterStore = create((set) => ({
     getChapterById: async (id, user) => {
         const res = await fetch(`/api/chapters/${id}`, {
             headers: {
-                'Authorization': `Bearer ${user.token}`, // 🔹 Include Token
+                'Authorization': `Bearer ${user.token}`,
                 'Content-Type': 'application/json',
             },
         });

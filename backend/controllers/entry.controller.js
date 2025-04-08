@@ -83,6 +83,12 @@ export const createEntry = async (req, res) => {
 
     try {
         await newEntry.save();
+        // Update the chapter's entries array
+        const chapter = await Chapter.findById(entry.chapter);
+        if (chapter) {
+            chapter.entries.push(newEntry._id); // Push the new entry ID to the chapter's entries
+            await chapter.save();
+        }
         res.status(201).json({ success: true, data: newEntry }); // Status 201: Something created
     } catch (error) {
         console.error("Error in Create entry:", error.message);
@@ -92,40 +98,91 @@ export const createEntry = async (req, res) => {
 
 export const updateEntry = async (req, res) => {
     const { id } = req.params;
+    const entry = req.body; // Entry data coming from the request
 
-    const entry = req.body;
-
+    // Validate the Entry ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ success: false, message: "Invalid Entry Id" });
     }
 
+    // Ensure the content is not empty
     if (!entry.content || entry.content.trim() === "") {
         return res.status(400).json({ success: false, message: "Content cannot be empty" });
     }
 
     try {
+        // Find the current entry
+        const currentEntry = await Entry.findById(id).populate("chapter");
+
+        if (!currentEntry) {
+            return res.status(404).json({ success: false, message: "Entry not found" });
+        }
+
+        // If the chapter is changing, we need to update the chapter's entries array
+        const currentChapter = currentEntry.chapter;
+        const newChapter = entry.chapter;
+
+        if (currentChapter && currentChapter._id.toString() !== newChapter) {
+            // If the chapter is changing, remove the entry ID from the old chapter's entries array
+            currentChapter.entries = currentChapter.entries.filter(entryId => !entryId.equals(id));
+            await currentChapter.save();
+        }
+
+        // Now handle the new chapter assignment, if any
+        if (newChapter && newChapter !== currentEntry.chapter?.toString()) {
+            const chapterToUpdate = await Chapter.findById(newChapter);
+            if (chapterToUpdate) {
+                // Add the entry to the new chapter's entries array
+                chapterToUpdate.entries.push(id);
+                await chapterToUpdate.save();
+            }
+        }
+
+        // Now update the entry itself with the new chapter
         const updatedEntry = await Entry.findByIdAndUpdate(id, entry, { new: true });
+
         res.status(200).json({ success: true, data: updatedEntry });
+
     } catch (error) {
+        console.error("Error in updating entry:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
-}
+};
+
 
 export const deleteEntry = async (req, res) => {
     const { id } = req.params;
 
+    // Validate the Entry ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ success: false, message: "Invalid Entry Id" });
     }
 
     try {
+        // Find the entry to be deleted
+        const entryToDelete = await Entry.findById(id).populate("chapter");
+
+        if (!entryToDelete) {
+            return res.status(404).json({ success: false, message: "Entry not found" });
+        }
+
+        // Remove the entry ID from the chapter's entries array
+        if (entryToDelete.chapter) {
+            const chapter = entryToDelete.chapter;
+            chapter.entries = chapter.entries.filter(entryId => !entryId.equals(id));
+            await chapter.save();
+        }
+
+        // Delete the entry from the Entry collection
         await Entry.findByIdAndDelete(id);
-        res.status(200).json({ success: true, message: "Entry deleted" });
+
+        res.status(200).json({ success: true, message: "Entry deleted successfully" });
     } catch (error) {
-        console.log("error in deleting entry:", error.message);
+        console.error("Error deleting entry:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
-}
+};
+
 
 // Function to fetch all media URLs
 export const getAllMedia = async (req, res) => {
