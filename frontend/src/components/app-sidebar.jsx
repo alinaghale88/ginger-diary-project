@@ -1,4 +1,4 @@
-import { House, BookOpenText, Search, Images, FolderOutput, UserPen } from "lucide-react"
+import { House, BookOpenText, Images, FolderOutput, UserPen } from "lucide-react"
 import { useLogout } from "@/hooks/useLogout"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import {
@@ -35,7 +35,6 @@ import html2canvas from "html2canvas"
 const items = [
     { title: "Home", url: "/", icon: House },
     { title: "Chapter", url: "/create-chapter", icon: BookOpenText },
-    { title: "Search", url: "#", icon: Search },
     { title: "Gallery", url: "/gallery", icon: Images },
 ]
 

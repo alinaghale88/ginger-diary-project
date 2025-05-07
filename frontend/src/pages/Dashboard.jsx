@@ -41,7 +41,7 @@ const Dashboard = () => {
       <Navbar className='z-50' />
       <div className='-ml-7 w-full'>
         <Header />
-        <div className="max-w-6xl mx-auto px-4 mt-7">
+        <div className="max-w-6xl mx-auto px-4 mt-7 slider">
           <h2 className='text-xl font-bold mb-4 font-gotu tracking-[0.4px]'>Chapters</h2>
           {chapters && chapters.length ? (
             <Carousel className="w-full mb-0" plugins={[plugin.current]} loop
@@ -60,7 +60,7 @@ const Dashboard = () => {
               <CarouselNext />
             </Carousel>
           ) : (
-            <p>No chapters available. <Link to="/create-chapter">Create one now</Link></p>
+            <p className='mb-10'>No chapters available. <Link to="/create-chapter"><span className='text-yellow-300'>Create one now</span></Link></p>
           )}
         </div>
         <div className="max-w-6xl mx-auto px-4">

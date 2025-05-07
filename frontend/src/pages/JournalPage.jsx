@@ -171,7 +171,7 @@ const JournalPage = () => {
     return (
         <div className="flex">
             <Navbar className="z-50" />
-            <div className="-ml-7 w-full">
+            <div className="-ml-7 w-full editor-container">
                 <Header />
 
                 {/* Chapter selection dropdown (re-renders only when necessary) */}

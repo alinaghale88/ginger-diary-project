@@ -63,13 +63,13 @@ const ViewChapter = () => {
                         <Trash2 className="w-5 cursor-pointer" onClick={handleDeleteChapter} />
                     </div>
                 </div>
-                <div className="max-w-6xl mx-auto px-4 mt-7 flex flex-wrap flex-row">
+                <div className="max-w-6xl mx-auto px-4 mt-7 flex flex-wrap flex-row ch-description">
                     {/* Chapter Details */}
                     {chapter.coverImage && (
                         <img src={chapter.coverImage} alt="Cover" className="md:basis-1/2 lg:basis-1/3 h-[220px] object-cover rounded-lg" />
                     )}
 
-                    <p className="flex-1 pl-12 max-w-[700px]">{chapter.description}</p>
+                    <p className="flex-1 pl-12 max-w-[700px] ch-content">{chapter.description}</p>
                 </div>
 
                 {/* List of Entries */}

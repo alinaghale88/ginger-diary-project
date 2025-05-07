@@ -155,3 +155,71 @@ textarea {
 .ql-editor.ql-blank::before {
   font-style: normal !important;
 }
+
+@media screen and (max-width: 1240px) {
+  .slider button {
+    display: none;
+  }
+}
+
+.slider {
+  container-type: inline-size;
+}
+
+@container (max-width: 768px) {
+  .md\:basis-1\/2 {
+    flex-basis: 100%;
+  }
+}
+
+.ch-description {
+  container-type: inline-size;
+  container-name: description;
+}
+
+@container description (max-width: 768px) {
+  .ch-content {
+    padding-left: unset;
+    padding-top: 2rem;
+    flex: auto;
+  }
+}
+
+.gallery-container {
+  container-type: inline-size;
+  container-name: gallery;
+}
+
+@container gallery (width < 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 40px;
+  }
+
+  .grid div {
+    margin-bottom: 0;
+  }
+}
+
+@container gallery (width < 500px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr))
+  }
+}
+
+.editor-container {
+  container-type: inline-size;
+  container-name: editor;
+}
+
+@container editor (max-width: 840px) {
+  .ql-toolbar.ql-snow {
+    padding-top: 64px !important;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .dialog-box {
+    max-width: 90%;
+  }
+}
